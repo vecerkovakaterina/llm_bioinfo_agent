@@ -18,7 +18,7 @@ This project is in the early stages and is not ready for external use. It serves
 
 ## Contact
 
-For questions or to discuss ideas, feel free to reach out to [vecerkovakaterina1@gmail.com](mailto:vecerkovakaterina1@gmail.com?subject=Bioinformatics LLM Agent Playground)
+For questions or to discuss ideas, feel free to reach out to [vecerkovakaterina1@gmail.com](mailto:vecerkovakaterina1@gmail.com?subject=Bioinformatics%20LLM%20Agent%20Playground)
 
 
 
