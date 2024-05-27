@@ -75,6 +75,8 @@ def get_further_clarification(question):
 
 def look_up_species_by_ensembl_id(ensembl_id):
     """Look up the species for any gene Ensembl ID e.g. ENSG00000157764"""
+    if not ensembl_id:
+        return "Ensembl ID argument not provided!"
     ext = f"/lookup/id/{ensembl_id}?"
     request = requests.get(
         ensembl_api + ext, headers={"Content-Type": "application/json"}
@@ -84,6 +86,8 @@ def look_up_species_by_ensembl_id(ensembl_id):
 
 def get_taxonomy_classification(species_name):
     """Get taxonomy classification based on species name e.g. Homo sapiens"""
+    if not species_name:
+        return "Species name argument not provided!"
     ext = f"/taxonomy/classification/{species_name}?"
     request = requests.get(
         ensembl_api + ext, headers={"Content-Type": "application/json"}
