@@ -42,8 +42,7 @@ def parse_function_call(json_llm_call):
 
 tools_dict = {
     "get_further_clarification": get_further_clarification,
-    "look_up_species_by_ensembl_id": look_up_species_by_ensembl_id,
-    "get_taxonomy_classification": get_taxonomy_classification,
+    "gget_info": gget_info,
 }
 
 question = "Is the species with the gene ENSMUSG00000050530 same as species with the gene ENSMUSG00000017167?"  # question = input("Enter your question: ")
