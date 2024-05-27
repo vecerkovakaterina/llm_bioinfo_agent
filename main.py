@@ -41,6 +41,7 @@ def parse_function_call(json_llm_call):
 
 
 tools_dict = {
+    "get_further_clarification": get_further_clarification,
     "look_up_species_by_ensembl_id": look_up_species_by_ensembl_id,
     "get_taxonomy_classification": get_taxonomy_classification,
 }

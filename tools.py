@@ -5,6 +5,20 @@ from langchain_experimental.llms.ollama_functions import DEFAULT_RESPONSE_FUNCTI
 
 tools = [
     {
+        "name": "get_further_clarification",
+        "description": "Ask user for further clarification, instructions or more details",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "question": {
+                    "type": "string",
+                    "description": "Question to the user",
+                },
+            },
+            "required": ["question"],
+        },
+    },
+    {
         "name": "look_up_species_by_ensembl_id",
         "description": "Look up the species for any gene Ensembl ID e.g. ENSG00000157764",
         "parameters": {
@@ -51,6 +65,14 @@ ensembl_api = "https://rest.ensembl.org"
 
 
 # tools implementations
+
+
+def get_further_clarification(question):
+    """Ask user for further clarification, instructions or more details"""
+    answer = input(question)
+    return answer
+
+
 def look_up_species_by_ensembl_id(ensembl_id):
     """Look up the species for any gene Ensembl ID e.g. ENSG00000157764"""
     ext = f"/lookup/id/{ensembl_id}?"
