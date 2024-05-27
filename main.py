@@ -59,7 +59,7 @@ params_dict = {
     ],
     "format": "json",
     "stream": False,
-    "options": {"temperature": 0, "num_ctx": 8000, "num_batch": 64},
+    "options": {"temperature": 0, "num_ctx": 8000},
 }
 
 while response is None:
