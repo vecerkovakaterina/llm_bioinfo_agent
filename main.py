@@ -5,6 +5,7 @@ from tools import *
 
 set_debug(True)
 set_verbose(True)
+gget.setup("alphafold")
 
 
 def call_ollama_api(params):
@@ -44,6 +45,7 @@ tools_dict = {
     "get_further_clarification": get_further_clarification,
     "gget_info": gget_info,
     "gget_search": gget_search,
+    "gget_alphafold": gget_alphafold,
 }
 
 question = "Is the species with the gene ENSMUSG00000050530 same as species with the gene ENSMUSG00000017167?"  # question = input("Enter your question: ")
