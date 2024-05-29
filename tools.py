@@ -88,6 +88,49 @@ tools = [
             "required": ["search_words"],
         },
     },
+    {
+        "name": "gget_alphafold",
+        "description": "Predicts the structure of a protein using a slightly simplified version of AlphaFold v2.3.0 "
+        "published in the AlphaFold Colab notebook",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "sequence": {
+                    "type": "string",
+                    "description": "Amino acid sequence (str), a list of sequences",
+                },
+                # "out": {
+                #     "type": "string",
+                #     "description": "Path to folder to save prediction results in (str)."
+                #     "Default: './[date_time]_gget_alphafold_prediction'",
+                # },
+                "multimer_for_monomer": {
+                    "type": "bool",
+                    "description": "Use multimer model for a monomer (default: False).",
+                },
+                "multimer_recycles": {
+                    "type": "int",
+                    "description": "The multimer model will continue recycling until the predictions stop changing, "
+                    "up to the limit set here (default: 3). For higher accuracy, at the potential cost "
+                    "of longer inference times, set this to 20.",
+                },
+                "relax": {
+                    "type": "bool",
+                    "description": "True/False whether to AMBER relax the best model (default: False).",
+                },
+                "plot": {
+                    "type": "bool",
+                    "description": "True/False whether to provide a graphical overview of the prediction (default: "
+                    "True).",
+                },
+                "show_sidechains": {
+                    "type": "bool",
+                    "description": "True/False whether to show side chains in the plot (default: True).",
+                },
+            },
+            "required": ["sequence"],
+        },
+    },
     DEFAULT_RESPONSE_FUNCTION,
 ]
 
@@ -153,6 +196,34 @@ def gget_search(search_words, species, release=111, id_type="gene", andor="or"):
         id_type=id_type,
         andor=andor,
         verbose=False,
+    )
+    if result is not None:
+        result = result.to_string()
+    return result
+
+
+def gget_alphafold(
+    sequence=None,
+    multimer_for_monomer=False,
+    relax=False,
+    multimer_recycles=3,
+    plot=True,
+    show_sidechains=True,
+):
+    """Predicts the structure of a protein using a slightly simplified version of AlphaFold v2.3.0 (
+    https://doi.org/10.1038/s41586-021-03819-2) published in the AlphaFold Colab notebook (
+    https://colab.research.google.com/github/deepmind/alphafold/blob/main/notebooks/AlphaFold.ipynb).
+    """
+    if not sequence or len(sequence) == 0:
+        return "Aminoacid sequence not provided!"
+    result = gget.alphafold(
+        sequence=sequence,
+        multimer_for_monomer=multimer_for_monomer,
+        relax=relax,
+        multimer_recycles=multimer_recycles,
+        plot=plot,
+        show_sidechains=show_sidechains,
+        verbose=True,
     )
     if result is not None:
         result = result.to_string()
