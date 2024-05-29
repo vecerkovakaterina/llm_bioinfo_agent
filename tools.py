@@ -175,7 +175,7 @@ def gget_info(ensembl_ids, ncbi=True, uniprot=True, pdb=False):
         if not ensembl_ids.startswith("ENS"):
             return f"{ensembl_ids} does not start with ENS and therefore is not an Ensembl ID!"
     result = gget.info(
-        ens_ids=ensembl_ids, ncbi=ncbi, uniprot=uniprot, pdb=pdb, verbose=False
+        ens_ids=ensembl_ids, ncbi=ncbi, uniprot=uniprot, pdb=pdb, verbose=True
     )
     if result is not None:
         result = result.to_string()
@@ -195,7 +195,7 @@ def gget_search(search_words, species, release=111, id_type="gene", andor="or"):
         release=release,
         id_type=id_type,
         andor=andor,
-        verbose=False,
+        verbose=True,
     )
     if result is not None:
         result = result.to_string()
