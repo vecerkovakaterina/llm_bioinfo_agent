@@ -85,7 +85,7 @@ tools = [
                     "of the searchwords in their name/description.",
                 },
             },
-            "required": ["search_words"],
+            "required": ["search_words", "species"],
         },
     },
     {
