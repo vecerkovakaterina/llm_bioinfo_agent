@@ -134,7 +134,7 @@ def gget_info(ensembl_ids, ncbi=True, uniprot=True, pdb=False):
     result = gget.info(
         ens_ids=ensembl_ids, ncbi=ncbi, uniprot=uniprot, pdb=pdb, verbose=False
     )
-    if not result.empty:
+    if result is not None:
         result = result.to_string()
     return result
 
@@ -154,6 +154,6 @@ def gget_search(search_words, species, release=111, id_type="gene", andor="or"):
         andor=andor,
         verbose=False,
     )
-    if not result.empty:
+    if result is not None:
         result = result.to_string()
     return result
