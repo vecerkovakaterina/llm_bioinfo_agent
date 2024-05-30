@@ -131,6 +131,42 @@ tools = [
             "required": ["sequence"],
         },
     },
+    {
+        "name": "gget_archs4",
+        "description": "Find the most correlated genes or the tissue expression atlas of a gene of interest using "
+        "data from the human and mouse RNA-seq database ARCHS4 (https://maayanlab.cloud/archs4/).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "gene": {
+                    "type": "string",
+                    "description": "Short name (Entrez gene symbol) of gene of interest (str), e.g. 'STAT4'. Set "
+                    "'ensembl=True' to input an Ensembl gene ID, e.g. ENSG00000138378.",
+                },
+                "ensembl": {
+                    "type": "bool",
+                    "description": "Define as 'True' if 'gene' is an Ensembl gene ID. (Default: False)",
+                },
+                "which": {
+                    "type": "string",
+                    "description": "'correlation' (default) or 'tissue'. - 'correlation' returns a gene correlation "
+                    "table that contains the 100 most correlated genes to the gene of interest. The "
+                    "Pearson correlation is calculated over all samples and tissues in ARCHS4. - "
+                    "'tissue' returns a tissue expression atlas calculated from human or mouse samples "
+                    "(as defined by 'species') in ARCHS4.",
+                },
+                "gene_count": {
+                    "type": "int",
+                    "description": "Number of correlated genes to return (default: 100). (Only for gene correlation.)",
+                },
+                "species": {
+                    "type": "int",
+                    "description": "'human' (default) or 'mouse'. (Only for tissue expression atlas.)",
+                },
+            },
+            "required": ["sequence"],
+        },
+    },
     DEFAULT_RESPONSE_FUNCTION,
 ]
 
@@ -214,7 +250,7 @@ def gget_alphafold(
     https://doi.org/10.1038/s41586-021-03819-2) published in the AlphaFold Colab notebook (
     https://colab.research.google.com/github/deepmind/alphafold/blob/main/notebooks/AlphaFold.ipynb).
     """
-    if not sequence or len(sequence) == 0:
+    if not sequence:
         return "Aminoacid sequence not provided!"
     result = gget.alphafold(
         sequence=sequence,
@@ -223,6 +259,27 @@ def gget_alphafold(
         multimer_recycles=multimer_recycles,
         plot=plot,
         show_sidechains=show_sidechains,
+        verbose=True,
+    )
+    if result is not None:
+        result = result.to_string()
+    return result
+
+
+def gget_archs4(
+    gene, ensembl=False, which="correlation", gene_count=100, species="human"
+):
+    """Find the most correlated genes or the tissue expression atlas
+    of a gene of interest using data from the human and mouse RNA-seq
+    database ARCHS4 (https://maayanlab.cloud/archs4/)."""
+    if not gene:
+        return "Required argument gene not provided!"
+    result = gget.archs4(
+        gene=gene,
+        ensembl=ensembl,
+        which=which,
+        gene_count=gene_count,
+        species=species,
         verbose=True,
     )
     if result is not None:
