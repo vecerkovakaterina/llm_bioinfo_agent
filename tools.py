@@ -164,7 +164,7 @@ tools = [
                     "description": "'human' (default) or 'mouse'. (Only for tissue expression atlas.)",
                 },
             },
-            "required": ["sequence"],
+            "required": ["gene"],
         },
     },
     DEFAULT_RESPONSE_FUNCTION,
