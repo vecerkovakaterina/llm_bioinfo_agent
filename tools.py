@@ -207,6 +207,31 @@ tools = [
             "required": ["sequence"],
         },
     },
+    {
+        "name": "gget_blat",
+        "description": "BLAT a nucleotide or amino acid sequence against any BLAT UCSC assembly.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "sequence": {
+                    "type": "string",
+                    "description": "Sequence (str) or path to fasta file containing one sequence.",
+                },
+                "seqtype": {
+                    "type": "string",
+                    "description": "'DNA', 'protein', 'translated%20RNA', or 'translated%20DNA'. Default: 'DNA' for "
+                    "nucleotide sequences; 'protein' for amino acid sequences.",
+                },
+                "assembly": {
+                    "type": "string",
+                    "description": "'human' (hg38) (default), 'mouse' (mm39), 'zebrafinch' (taeGut2), or any of the "
+                    "species assemblies available at https://genome.ucsc.edu/cgi-bin/hgBlat (use short "
+                    "assembly name as listed after the' / ').",
+                },
+            },
+            "required": ["sequence"],
+        },
+    },
     DEFAULT_RESPONSE_FUNCTION,
 ]
 
@@ -348,6 +373,18 @@ def gget_blast(
         low_comp_filt=low_comp_filt,
         megablast=megablast,
         verbose=True,
+    )
+    if result is not None:
+        result = result.to_markdown()
+    return result
+
+
+def gget_blat(sequence, seqtype="default", assembly="human"):
+    """BLAT a nucleotide or amino acid sequence against any BLAT UCSC assembly."""
+    if not sequence:
+        return "Required argument sequence not provided!"
+    result = gget.blat(
+        sequence=sequence, seqtype=seqtype, assembly=assembly, verbose=True
     )
     if result is not None:
         result = result.to_markdown()
