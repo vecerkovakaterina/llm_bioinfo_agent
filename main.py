@@ -47,6 +47,7 @@ tools_dict = {
     "gget_search": gget_search,
     "gget_alphafold": gget_alphafold,
     "gget_archs4": gget_archs4,
+    "gget_blast": gget_blast,
 }
 
 question = "Is the species with the gene ENSMUSG00000050530 same as species with the gene ENSMUSG00000017167?"  # question = input("Enter your question: ")
@@ -92,3 +93,4 @@ print(response)
 
 # TODO logging
 # TODO gget functions as tools
+# TODO after response wait for another human message

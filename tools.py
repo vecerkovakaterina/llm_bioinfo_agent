@@ -167,6 +167,46 @@ tools = [
             "required": ["gene"],
         },
     },
+    {
+        "name": "gget_blast",
+        "description": "BLAST a nucleotide or amino acid sequence against any BLAST DB.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "sequence": {
+                    "type": "string",
+                    "description": "Sequence (str) or path to FASTA file.",
+                },
+                "program": {
+                    "type": "string",
+                    "description": "'blastn', 'blastp', 'blastx', 'tblastn', or 'tblastx'. Default: 'blastn' for "
+                    "nucleotide sequences; 'blastp' for amino acid sequences.",
+                },
+                "database": {
+                    "type": "string",
+                    "description": "'nt', 'nr', 'refseq_rna', 'refseq_protein', 'swissprot', 'pdbaa', or 'pdbnt'. "
+                    "Default: 'nt' for nucleotide sequences; 'nr' for amino acid sequences.",
+                },
+                "limit": {
+                    "type": "int",
+                    "description": "Limits number of hits to return. Default 50.",
+                },
+                "expect": {
+                    "type": "float",
+                    "description": "float or None. An expect value cutoff. Default 10.0.",
+                },
+                "low_comp_filt": {
+                    "type": "bool",
+                    "description": "True/False whether to apply low complexity filter. Default False.",
+                },
+                "megablast": {
+                    "type": "bool",
+                    "description": "True/False whether to use the MegaBLAST algorithm (blastn only). Default True.",
+                },
+            },
+            "required": ["sequence"],
+        },
+    },
     DEFAULT_RESPONSE_FUNCTION,
 ]
 
@@ -283,5 +323,32 @@ def gget_archs4(
         verbose=True,
     )
     if result is not None:
-        result = result.to_string()
+        result = result.to_markdown()
+    return result
+
+
+def gget_blast(
+    sequence,
+    program="default",
+    database="default",
+    limit=50,
+    expect=10.0,
+    low_comp_filt=False,
+    megablast=True,
+):
+    """BLAST a nucleotide or amino acid sequence against any BLAST DB."""
+    if not sequence:
+        return "Required argument sequence not provided!"
+    result = gget.blast(
+        sequence=sequence,
+        program=program,
+        database=database,
+        limit=limit,
+        expect=expect,
+        low_comp_filt=low_comp_filt,
+        megablast=megablast,
+        verbose=True,
+    )
+    if result is not None:
+        result = result.to_markdown()
     return result
