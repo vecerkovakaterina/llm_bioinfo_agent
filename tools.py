@@ -1,6 +1,7 @@
 import json
 
 import gget
+import pandas as pd
 from langchain_experimental.llms.ollama_functions import DEFAULT_RESPONSE_FUNCTION
 
 tools = [
@@ -232,6 +233,149 @@ tools = [
             "required": ["sequence"],
         },
     },
+    {
+        "name": "gget_cellxgene",
+        "description": "Query data from CZ CELLxGENE Discover (https://cellxgene.cziscience.com/) using the CZ "
+        "CELLxGENE Discover Census (https://github.com/chanzuckerberg/cellxgene-census). NOTE: "
+        "Querying large datasets requires a large amount of RAM. Use the cell metadata attributes to "
+        "define the (sub)dataset of interest. The CZ CELLxGENE Discover Census recommends >16 GB of "
+        "memory and a >5 Mbps internet connection. Returns AnnData object (when meta_only=False) or dataframe (when "
+        "meta_only=True).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "species": {
+                    "type": "str",
+                    "description": "Choice of 'homo_sapiens' or 'mus_musculus'. Default: 'homo_sapiens'.",
+                },
+                "gene": {
+                    "type": "str|list",
+                    "description": "Str or list of gene name(s) or Ensembl ID(s), e.g. ['ACE2', 'SLC5A1'] or ["
+                    "'ENSG00000130234', 'ENSG00000100170']. Default: None. NOTE: Set ensembl=True when "
+                    "providing Ensembl ID(s) instead of gene name(s).",
+                },
+                "ensembl": {
+                    "type": "bool",
+                    "description": "True/False (default: False). Set to True when genes are provided as Ensembl IDs.",
+                },
+                "column_names": {
+                    "type": "list",
+                    "description": "List of metadata columns to return (stored in AnnData.obs when meta_only=False). "
+                    "Default: ['dataset_id', 'assay', 'suspension_type', 'sex', 'tissue_general', "
+                    "'tissue', 'cell_type']",
+                },
+                "meta_only": {
+                    "type": "bool",
+                    "description": "True/False (default: False). If True, returns only metadata dataframe ("
+                    "corresponds to AnnData.obs).",
+                },
+                "census_version": {
+                    "type": "str",
+                    "description": "Str defining version of Census, e.g. '2023-05-15' or 'latest' or 'stable'. "
+                    "Default: 'stable'.",
+                },
+                "out": {
+                    "type": "str",
+                    "description": "If provided, saves the generated AnnData h5ad (or csv when meta_only=True) file "
+                    "with the specified path. Default: None.",
+                },
+                "tissue": {
+                    "type": "str|list",
+                    "description": "Str or list of tissue(s), e.g. ['lung', 'blood']. Default: None.",
+                },
+                "cell_type": {
+                    "type": "str|list",
+                    "description": "Str or list of celltype(s), e.g. ['mucus secreting cell', 'neuroendocrine cell']. "
+                    "Default: None.",
+                },
+                "development_stage": {
+                    "type": "str|list",
+                    "description": "Str or list of development stage(s). Default: None.",
+                },
+                "disease": {
+                    "type": "str|list",
+                    "description": "Str or list of disease(s). Default: None.",
+                },
+                "sex": {
+                    "type": "str|list",
+                    "description": "Str or list of sex(es), e.g. 'female'. Default: None.",
+                },
+                "is_primary_data": {
+                    "type": "bool",
+                    "description": "True/False (default: True). If True, returns only the canonical instance of the "
+                    "cellular observation. This is commonly set to False for meta-analyses reusing "
+                    "data or for secondary views of data.",
+                },
+                "dataset_id": {
+                    "type": "str|list",
+                    "description": "Str or list of CELLxGENE dataset ID(s). Default: None.",
+                },
+                "tissue_general_ontology_term_id": {
+                    "type": "str|list",
+                    "description": "Str or list of high-level tissue UBERON ID(s). Default: None.",
+                },
+                "tissue_general": {
+                    "type": "str|list",
+                    "description": "Str or list of high-level tissue label(s). Default: None.",
+                },
+                "tissue_ontology_term_id": {
+                    "type": "str|list",
+                    "description": "Str or list of tissue ontology term ID(s) as defined in the CELLxGENE dataset "
+                    "schema. Default: None.",
+                },
+                "assay_ontology_term_id": {
+                    "type": "str|list",
+                    "description": "Str or list of assay ontology term ID(s) as defined in the CELLxGENE dataset "
+                    "schema. Default: None.",
+                },
+                "assay": {
+                    "type": "str|list",
+                    "description": "Str or list of assay(s) as defined in the CELLxGENE dataset schema. Default: None.",
+                },
+                "cell_type_ontology_term_id": {
+                    "type": "str|list",
+                    "description": "Str or list of celltype ontology term ID(s) as defined in the CELLxGENE dataset "
+                    "schema. Default: None.",
+                },
+                "development_stage_ontology_term_id": {
+                    "type": "str|list",
+                    "description": "Str or list of development stage ontology term ID(s) as defined in the CELLxGENE "
+                    "dataset schema. Default: None.",
+                },
+                "disease_ontology_term_id": {
+                    "type": "str|list",
+                    "description": "Str or list of disease ontology term ID(s) as defined in the CELLxGENE dataset "
+                    "schema. Default: None.",
+                },
+                "donor_id": {
+                    "type": "str|list",
+                    "description": "Str or list of donor ID(s) as defined in the CELLxGENE dataset schema. Default: "
+                    "None.",
+                },
+                "self_reported_ethnicity_ontology_term_id": {
+                    "type": "str|list",
+                    "description": "Str or list of self reported ethnicity ontology ID(s) as defined in the CELLxGENE "
+                    "dataset schema. Default: None.",
+                },
+                "self_reported_ethnicity": {
+                    "type": "str|list",
+                    "description": "Str or list of self reported ethnicity as defined in the CELLxGENE dataset "
+                    "schema. Default: None.",
+                },
+                "sex_ontology_term_id": {
+                    "type": "str|list",
+                    "description": "Str or list of sex ontology ID(s) as defined in the CELLxGENE dataset schema. "
+                    "Default: None.",
+                },
+                "suspension_type": {
+                    "type": "str|list",
+                    "description": "Str or list of suspension type(s) as defined in the CELLxGENE dataset schema. "
+                    "Default: None.",
+                },
+            },
+            "required": [],
+        },
+    },
     DEFAULT_RESPONSE_FUNCTION,
 ]
 
@@ -388,4 +532,87 @@ def gget_blat(sequence, seqtype="default", assembly="human"):
     )
     if result is not None:
         result = result.to_markdown()
+    return result
+
+
+def gget_cellxgene(
+    species="homo_sapiens",
+    gene=None,
+    ensembl=False,
+    column_names=[
+        "dataset_id",
+        "assay",
+        "suspension_type",
+        "sex",
+        "tissue_general",
+        "tissue",
+        "cell_type",
+    ],
+    meta_only=False,
+    tissue=None,
+    cell_type=None,
+    development_stage=None,
+    disease=None,
+    sex=None,
+    is_primary_data=True,
+    dataset_id=None,
+    tissue_general_ontology_term_id=None,
+    tissue_general=None,
+    assay_ontology_term_id=None,
+    assay=None,
+    cell_type_ontology_term_id=None,
+    development_stage_ontology_term_id=None,
+    disease_ontology_term_id=None,
+    donor_id=None,
+    self_reported_ethnicity_ontology_term_id=None,
+    self_reported_ethnicity=None,
+    sex_ontology_term_id=None,
+    suspension_type=None,
+    tissue_ontology_term_id=None,
+    census_version="stable",
+    out=None,
+):
+    """Query data from CZ CELLxGENE Discover (https://cellxgene.cziscience.com/) using the
+    CZ CELLxGENE Discover Census (https://github.com/chanzuckerberg/cellxgene-census).
+
+    NOTE: Querying large datasets requires a large amount of RAM. Use the cell metadata attributes
+    to define the (sub)dataset of interest.
+    The CZ CELLxGENE Discover Census recommends >16 GB of memory and a >5 Mbps internet connection.
+    """
+    result = gget.cellxgene(
+        species=species,
+        gene=gene,
+        ensembl=ensembl,
+        column_names=column_names,
+        meta_only=meta_only,
+        tissue=tissue,
+        cell_type=cell_type,
+        development_stage=development_stage,
+        disease=disease,
+        sex=sex,
+        is_primary_data=is_primary_data,
+        dataset_id=dataset_id,
+        tissue_general_ontology_term_id=tissue_general_ontology_term_id,
+        tissue_general=tissue_general,
+        assay_ontology_term_id=assay_ontology_term_id,
+        assay=assay,
+        cell_type_ontology_term_id=cell_type_ontology_term_id,
+        development_stage_ontology_term_id=development_stage_ontology_term_id,
+        disease_ontology_term_id=disease_ontology_term_id,
+        donor_id=donor_id,
+        self_reported_ethnicity_ontology_term_id=self_reported_ethnicity_ontology_term_id,
+        self_reported_ethnicity=self_reported_ethnicity,
+        sex_ontology_term_id=sex_ontology_term_id,
+        suspension_type=suspension_type,
+        tissue_ontology_term_id=tissue_ontology_term_id,
+        census_version=census_version,
+        verbose=True,
+        out=out,
+    )
+    if result is not None:
+        if isinstance(result, pd.DataFrame):
+            result = result.to_markdown()
+        else:
+            # TODO returns AnnData object when meta_only=False
+            pass
     return result
