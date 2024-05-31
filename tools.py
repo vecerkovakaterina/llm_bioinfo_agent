@@ -12,7 +12,7 @@ tools = [
             "type": "object",
             "properties": {
                 "question": {
-                    "type": "string",
+                    "type": "str",
                     "description": "Question to the user",
                 },
             },
@@ -63,7 +63,7 @@ tools = [
                     "e.g.searchwords = ['GABA', 'gamma-aminobutyric']).",
                 },
                 "species": {
-                    "type": "string",
+                    "type": "str",
                     "description": "Species or database to be searched. A species can be passed in the format "
                     "'genus_species', e.g. 'homo_sapiens' or 'arabidopsis_thaliana'.",
                 },
@@ -75,12 +75,12 @@ tools = [
                     "release is used",
                 },
                 "id_type": {
-                    "type": "string",
+                    "type": "str",
                     "description": "'gene' (default) or 'transcript' Defines whether genes or transcripts matching "
                     "the searchwords are returned.",
                 },
                 "andor": {
-                    "type": "string",
+                    "type": "str",
                     "description": "'or' (default) or 'and'. 'or': Returns all genes that INCLUDE AT LEAST ONE of the "
                     "searchwords in their name/description. 'and': Returns only genes that INCLUDE ALL "
                     "of the searchwords in their name/description.",
@@ -97,11 +97,11 @@ tools = [
             "type": "object",
             "properties": {
                 "sequence": {
-                    "type": "string",
+                    "type": "str",
                     "description": "Amino acid sequence (str), a list of sequences",
                 },
                 # "out": {
-                #     "type": "string",
+                #     "type": "str",
                 #     "description": "Path to folder to save prediction results in (str)."
                 #     "Default: './[date_time]_gget_alphafold_prediction'",
                 # },
@@ -140,7 +140,7 @@ tools = [
             "type": "object",
             "properties": {
                 "gene": {
-                    "type": "string",
+                    "type": "str",
                     "description": "Short name (Entrez gene symbol) of gene of interest (str), e.g. 'STAT4'. Set "
                     "'ensembl=True' to input an Ensembl gene ID, e.g. ENSG00000138378.",
                 },
@@ -149,7 +149,7 @@ tools = [
                     "description": "Define as 'True' if 'gene' is an Ensembl gene ID. (Default: False)",
                 },
                 "which": {
-                    "type": "string",
+                    "type": "str",
                     "description": "'correlation' (default) or 'tissue'. - 'correlation' returns a gene correlation "
                     "table that contains the 100 most correlated genes to the gene of interest. The "
                     "Pearson correlation is calculated over all samples and tissues in ARCHS4. - "
@@ -175,16 +175,16 @@ tools = [
             "type": "object",
             "properties": {
                 "sequence": {
-                    "type": "string",
+                    "type": "str",
                     "description": "Sequence (str) or path to FASTA file.",
                 },
                 "program": {
-                    "type": "string",
+                    "type": "str",
                     "description": "'blastn', 'blastp', 'blastx', 'tblastn', or 'tblastx'. Default: 'blastn' for "
                     "nucleotide sequences; 'blastp' for amino acid sequences.",
                 },
                 "database": {
-                    "type": "string",
+                    "type": "str",
                     "description": "'nt', 'nr', 'refseq_rna', 'refseq_protein', 'swissprot', 'pdbaa', or 'pdbnt'. "
                     "Default: 'nt' for nucleotide sequences; 'nr' for amino acid sequences.",
                 },
@@ -215,16 +215,16 @@ tools = [
             "type": "object",
             "properties": {
                 "sequence": {
-                    "type": "string",
+                    "type": "str",
                     "description": "Sequence (str) or path to fasta file containing one sequence.",
                 },
                 "seqtype": {
-                    "type": "string",
+                    "type": "str",
                     "description": "'DNA', 'protein', 'translated%20RNA', or 'translated%20DNA'. Default: 'DNA' for "
                     "nucleotide sequences; 'protein' for amino acid sequences.",
                 },
                 "assembly": {
-                    "type": "string",
+                    "type": "str",
                     "description": "'human' (hg38) (default), 'mouse' (mm39), 'zebrafinch' (taeGut2), or any of the "
                     "species assemblies available at https://genome.ucsc.edu/cgi-bin/hgBlat (use short "
                     "assembly name as listed after the' / ').",
