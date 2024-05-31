@@ -254,7 +254,7 @@ def gget_info(ensembl_ids, ncbi=True, uniprot=True, pdb=False):
         ens_ids=ensembl_ids, ncbi=ncbi, uniprot=uniprot, pdb=pdb, verbose=True
     )
     if result is not None:
-        result = result.to_string()
+        result = result.to_markdown()
     return result
 
 
@@ -274,7 +274,7 @@ def gget_search(search_words, species, release=111, id_type="gene", andor="or"):
         verbose=True,
     )
     if result is not None:
-        result = result.to_string()
+        result = result.to_markdown()
     return result
 
 
@@ -302,7 +302,7 @@ def gget_alphafold(
         verbose=True,
     )
     if result is not None:
-        result = result.to_string()
+        result = result.to_markdown()
     return result
 
 
