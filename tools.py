@@ -419,8 +419,9 @@ tools = [
         },
     },
     {
-        "name": "",
-        "description": "",
+        "name": "gget_diamond",
+        "description": "Align multiple protein or translated DNA sequences using DIAMOND (DIAMOND is similar to "
+                       "BLAST, but this is a local computation).",
         "parameters": {
             "type": "object",
             "properties": {
