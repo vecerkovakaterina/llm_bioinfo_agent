@@ -7,6 +7,7 @@ set_debug(True)
 set_verbose(True)
 # gget.setup("alphafold") keeps failing
 gget.setup("cellxgene")
+gget.setup("elm")
 
 
 def call_ollama_api(params):
@@ -53,6 +54,7 @@ tools_dict = {
     "gget_cellxgene": gget_cellxgene,
     "gget_cosmic": gget_cosmic,
     "gget_diamond": gget_diamond,
+    "gget_elm": gget_elm,
 }
 
 question = "Is the species with the gene ENSMUSG00000050530 same as species with the gene ENSMUSG00000017167?"  # question = input("Enter your question: ")

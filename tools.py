@@ -100,11 +100,11 @@ tools = [
                     "type": "str",
                     "description": "Amino acid sequence (str), a list of sequences",
                 },
-                # "out": {
-                #     "type": "str",
-                #     "description": "Path to folder to save prediction results in (str)."
-                #     "Default: './[date_time]_gget_alphafold_prediction'",
-                # },
+                "out": {
+                    "type": "str",
+                    "description": "Path to folder to save prediction results in (str)."
+                    "Default: './[date_time]_gget_alphafold_prediction'",
+                },
                 "multimer_for_monomer": {
                     "type": "bool",
                     "description": "Use multimer model for a monomer (default: False).",
@@ -421,7 +421,7 @@ tools = [
     {
         "name": "gget_diamond",
         "description": "Align multiple protein or translated DNA sequences using DIAMOND (DIAMOND is similar to "
-                       "BLAST, but this is a local computation).",
+        "BLAST, but this is a local computation).",
         "parameters": {
             "type": "object",
             "properties": {
@@ -461,7 +461,51 @@ tools = [
                     "are deleted.",
                 },
             },
-            "required": ["query, reference"],
+            "required": ["query", "reference"],
+        },
+    },
+    {
+        "name": "gget_elm",
+        "description": "Locally predicts Eukaryotic Linear Motifs from an amino acid sequence or UniProt Acc using "
+        "data from the ELM database (http://elm.eu.org/).",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "sequence": {
+                    "type": "str",
+                    "description": "Amino acid sequence or Uniprot Acc (str). If Uniprot Acc, set 'uniprot==True'.",
+                },
+                "uniprot": {
+                    "type": "bool",
+                    "description": "Set to True if the input is a Uniprot Acc instead of an amino acid sequence. "
+                    "Default: False.",
+                },
+                "sensitivity": {
+                    "type": "str",
+                    "description": "Sensitivity of DIAMOND alignment. One of the following: fast, mid-sensitive, "
+                    "sensitive, more-sensitive, very-sensitive, or ultra-sensitive. Default: "
+                    "'very-sensitive'",
+                },
+                "threads": {
+                    "type": "int",
+                    "description": "Number of threads used in DIAMOND alignment. Default: 1",
+                },
+                "diamond_binary": {
+                    "type": "str",
+                    "description": "Path to DIAMOND binary. Default: None -> Uses DIAMOND binary installed with gget.",
+                },
+                "expand": {
+                    "type": "bool",
+                    "description": "Expand the information returned in the regex data frame to include the protein "
+                    "names, organisms and references that the motif was orignally validated on. "
+                    "Default: False.",
+                },
+                "out": {
+                    "type": "str",
+                    "description": "Path to folder to save results in. Default: Standard out, temporary files are deleted.",
+                },
+            },
+            "required": ["sequence"],
         },
     },
     DEFAULT_RESPONSE_FUNCTION,
@@ -542,6 +586,7 @@ def gget_alphafold(
     multimer_recycles=3,
     plot=True,
     show_sidechains=True,
+    out=None,
 ):
     """Predicts the structure of a protein using a slightly simplified version of AlphaFold v2.3.0 (
     https://doi.org/10.1038/s41586-021-03819-2) published in the AlphaFold Colab notebook (
@@ -556,6 +601,7 @@ def gget_alphafold(
         multimer_recycles=multimer_recycles,
         plot=plot,
         show_sidechains=show_sidechains,
+        out=out,
         verbose=True,
     )
     if result is not None:
@@ -745,4 +791,30 @@ def gget_diamond(
     )
     if result is not None:
         result.to_markdown()
+    return result
+
+
+def gget_elm(
+    sequence,
+    uniprot=False,
+    sensitivity="very-sensitive",
+    threads=1,
+    diamond_binary=None,
+    expand=False,
+    out=None,
+):
+    """Locally predict Eukaryotic Linear Motifs from an amino acid sequence or UniProt Acc using data from the ELM
+    database."""
+    result = gget.elm(
+        sequence=sequence,
+        uniprot=uniprot,
+        sensitivity=sensitivity,
+        threads=threads,
+        diamond_binary=diamond_binary,
+        expand=expand,
+        out=out,
+        verbose=True,
+    )
+    if result is not None:
+        result = result.to_markdown()
     return result
