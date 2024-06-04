@@ -51,6 +51,7 @@ tools_dict = {
     "gget_blast": gget_blast,
     "gget_blat": gget_blat,
     "gget_cellxgene": gget_cellxgene,
+    "gget_cosmic": gget_cosmic,
 }
 
 question = "Is the species with the gene ENSMUSG00000050530 same as species with the gene ENSMUSG00000017167?"  # question = input("Enter your question: ")

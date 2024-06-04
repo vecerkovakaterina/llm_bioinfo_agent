@@ -376,6 +376,48 @@ tools = [
             "required": [],
         },
     },
+    {
+        "name": "gget_cosmic",
+        "description": "Search for genes, mutations, etc associated with cancers using the COSMIC (Catalogue Of "
+        "Somatic Mutations In Cancer) database",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "searchterm": {
+                    "type": "str",
+                    "description": "(str) Search term, which can be a mutation, gene name (or Ensembl ID), sample, etc."
+                    "Examples for the searchterm and entitity arguments:"
+                    "| searchterm   | entitity    |"
+                    "|--------------|-------------|"
+                    "| EGFR         | mutations   | -> Find mutations in the EGFR gene that are associated with cancer"
+                    "| v600e        | mutations   | -> Find genes for which a v600e mutation is associated with cancer"
+                    "| COSV57014428 | mutations   | -> Find mutations associated with this COSMIC mutations ID"
+                    "| EGFR         | genes       | -> Get the number of samples, coding/simple mutations, and fusions observed in COSMIC for EGFR"
+                    "| prostate     | cancer      | -> Get number of tested samples and mutations for prostate cancer"
+                    "| prostate     | tumour_site | -> Get number of tested samples, genes, mutations, fusions, etc. with 'prostate' as primary tissue site"
+                    "| ICGC         | studies     | -> Get project code and descriptions for all studies from the ICGC (International Cancer Genome Consortium)"
+                    "| EGFR         | pubmed      | -> Find PubMed publications on EGFR and cancer"
+                    "| ICGC         | samples     | -> Get metadata on all samples from the ICGC (International Cancer Genome Consortium)"
+                    "| COSS2907494  | samples     | -> Get metadata on this COSMIC sample ID (cancer type, tissue, # analyzed genes, # mutations, etc.)",
+                },
+                "entity": {
+                    "type": "str",
+                    "description": "Defines the type of the results to return. One of the following: 'mutations' ("
+                    "default), 'genes', 'cancer', 'tumour_site', 'studies', 'pubmed', or 'samples'.",
+                },
+                "limit": {
+                    "type": "int",
+                    "description": "Number of hits to return. Default: 100",
+                },
+                "out": {
+                    "type": "str",
+                    "description": "Path to the file the results will be saved in, e.g. 'path/to/results.json'. "
+                    "Default: None",
+                },
+            },
+            "required": ["searchterm"],
+        },
+    },
     DEFAULT_RESPONSE_FUNCTION,
 ]
 
@@ -615,4 +657,20 @@ def gget_cellxgene(
         else:
             # TODO returns AnnData object when meta_only=False
             pass
+    return result
+
+
+def gget_cosmic(
+    searchterm,
+    entity="mutations",
+    limit=100,
+    out=None,
+):
+    """Search for genes, mutations, and other factors associated with cancer using the COSMIC (Catalogue Of Somatic
+    Mutations In Cancer) database."""
+    result = gget.cosmic()
+    if result is not None:
+        result = result.to_markdown(
+            searchterm=searchterm, entity=entity, limit=limit, out=out, verbose=True
+        )
     return result
