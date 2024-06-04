@@ -418,6 +418,51 @@ tools = [
             "required": ["searchterm"],
         },
     },
+    {
+        "name": "",
+        "description": "",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "str|list",
+                    "description": "Sequences (str or list) or path to FASTA file containing sequences to be aligned "
+                    "against the reference.",
+                },
+                "reference": {
+                    "type": "str|list",
+                    "description": "Reference sequences (str or list) or path to FASTA file containing reference "
+                    "sequences.",
+                },
+                "diamond_db": {
+                    "type": "str",
+                    "description": "Path to save DIAMOND database created from reference. Default: None -> Temporary "
+                    "db file will be deleted after alignment or saved in 'out' if 'out' is provided.",
+                },
+                "sensitivity": {
+                    "type": "str",
+                    "description": "Sensitivity of DIAMOND alignment. One of the following: fast, mid-sensitive, "
+                    "sensitive, more-sensitive, very-sensitive or ultra-sensitive. Default: "
+                    "'very-sensitive'",
+                },
+                "threads": {
+                    "type": "int",
+                    "description": "Number of threads to use for alignment. Default: 1.",
+                },
+                "diamond_binary": {
+                    "type": "str",
+                    "description": "Path to DIAMOND binary, e.g. path/bins/Linux/diamond. Default: None -> Uses "
+                    "DIAMOND binary installed with gget.",
+                },
+                "out": {
+                    "type": "str",
+                    "description": "Path to folder to save DIAMOND results in. Default: Standard out, temporary files "
+                    "are deleted.",
+                },
+            },
+            "required": ["query, reference"],
+        },
+    },
     DEFAULT_RESPONSE_FUNCTION,
 ]
 
@@ -673,4 +718,30 @@ def gget_cosmic(
         result = result.to_markdown(
             searchterm=searchterm, entity=entity, limit=limit, out=out, verbose=True
         )
+    return result
+
+
+def gget_diamond(
+    query,
+    reference,
+    diamond_db=None,
+    sensitivity="very-sensitive",
+    threads=1,
+    diamond_binary=None,
+    out=None,
+):
+    """Align multiple protein or translated DNA sequences using DIAMOND (DIAMOND is similar to BLAST, but this is a
+    local computation)."""
+    result = gget.diamond(
+        query=query,
+        reference=reference,
+        diamond_db=diamond_db,
+        sensitivity=sensitivity,
+        threads=threads,
+        diamond_binary=diamond_binary,
+        out=out,
+        verbose=True,
+    )
+    if result is not None:
+        result.to_markdown()
     return result
