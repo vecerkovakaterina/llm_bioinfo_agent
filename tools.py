@@ -508,6 +508,78 @@ tools = [
             "required": ["sequence"],
         },
     },
+    {
+        "name": "gget_enrichr",
+        "description": "Perform an enrichment analysis on a list of genes using Enrichr.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "genes": {
+                    "type": "list",
+                    "description": "List of Entrez gene symbols to perform enrichment analysis on, passed as a list "
+                    "of strings, e.g. ['PHF14', 'RBM3', 'MSL1', 'PHF21A']."
+                    "Set 'ensembl = True' to input a list of Ensembl gene IDs, e.g. ["
+                    "'ENSG00000106443', 'ENSG00000102317', 'ENSG00000188895'].",
+                },
+                "database": {
+                    "type": "str",
+                    "description": "Database to use as reference for the enrichment analysis."
+                    "Supported shortcuts (and their default database):"
+                    "'pathway' (KEGG_2021_Human)"
+                    "'transcription' (ChEA_2016)"
+                    "'ontology' (GO_Biological_Process_2021)"
+                    "'diseases_drugs' (GWAS_Catalog_2019)"
+                    "'celltypes' (PanglaoDB_Augmented_2021)"
+                    "'kinase_interactions' (KEA_2015)"
+                    "or any database listed under Gene-set Library at: "
+                    "https://maayanlab.cloud/Enrichr/#libraries",
+                },
+                "background_list": {
+                    "type": "list",
+                    "description": "List of gene names/Ensembl IDs to be used as background genes. (Default: None)",
+                },
+                "background": {
+                    "type": "bool",
+                    "description": "If True, use set of > 20,000 default background genes listed here: "
+                    "https://github.com/pachterlab/gget/blob/main/gget/constants/enrichr_bkg_genes.txt"
+                    ". (Default: False)",
+                },
+                "ensembl": {
+                    "type": "bool",
+                    "description": "Define as 'True' if 'genes' is a list of Ensembl gene IDs. (Default: False)",
+                },
+                "ensembl_bkg": {
+                    "type": "bool",
+                    "description": "Define as 'True' if 'background_list' is a list of Ensembl gene IDs. (Default: "
+                    "False)",
+                },
+                "plot": {
+                    "type": "bool",
+                    "description": "True/False whether to provide a graphical overview of the first 15 results. ("
+                    "Default: False)",
+                },
+                "figsize": {
+                    "type": "tuple",
+                    "description": "(width, height) of plot in inches. (Default: (10,10))",
+                },
+                "ax": {
+                    "type": "object",
+                    "description": "Pass a matplotlib axes object for further customization of the plot. (Default: "
+                    "None)",
+                },
+                "kegg_out": {
+                    "type": "str",
+                    "description": "Path to file to save the highlighted KEGG pathway image, "
+                    "e.g. path/to/folder/kegg_pathway.png. (Default: None)",
+                },
+                "kegg_rank": {
+                    "type": "int",
+                    "description": "Candidate pathway rank to be plotted in KEGG pathway image. (Default: 1)",
+                },
+            },
+            "required": ["genes", "database"],
+        },
+    },
     DEFAULT_RESPONSE_FUNCTION,
 ]
 
@@ -817,4 +889,39 @@ def gget_elm(
     )
     if result is not None:
         result = result.to_markdown()
+    return result
+
+
+def gget_enrichr(
+    genes,
+    database,
+    background_list=None,
+    background=False,
+    ensembl=False,
+    ensembl_bkg=False,
+    plot=False,
+    figsize=(10, 10),
+    ax=None,
+    kegg_out=None,
+    kegg_rank=1,
+):
+    """Perform an enrichment analysis on a list of genes using Enrichr."""
+    if not genes or not database:
+        return "Required arguments not provided!"
+    result = gget.enrichr(
+        genes=genes,
+        database=database,
+        background_list=background_list,
+        background=background,
+        ensembl=ensembl,
+        ensembl_bkg=ensembl_bkg,
+        plot=plot,
+        figsize=figsize,
+        ax=ax,
+        kegg_out=kegg_out,
+        kegg_rank=kegg_rank,
+        verbose=True,
+    )
+    if result is not None:
+        result = result.to_makrdown()
     return result
