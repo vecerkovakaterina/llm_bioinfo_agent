@@ -502,7 +502,8 @@ tools = [
                 },
                 "out": {
                     "type": "str",
-                    "description": "Path to folder to save results in. Default: Standard out, temporary files are deleted.",
+                    "description": "Path to folder to save results in. Default: Standard out, temporary files are "
+                    "deleted.",
                 },
             },
             "required": ["sequence"],
@@ -832,11 +833,13 @@ def gget_cosmic(
 ):
     """Search for genes, mutations, and other factors associated with cancer using the COSMIC (Catalogue Of Somatic
     Mutations In Cancer) database."""
-    result = gget.cosmic()
+    if not searchterm:
+        return "Required argument searchterm not provided!"
+    result = gget.cosmic(
+        searchterm=searchterm, entity=entity, limit=limit, out=out, verbose=True
+    )
     if result is not None:
-        result = result.to_markdown(
-            searchterm=searchterm, entity=entity, limit=limit, out=out, verbose=True
-        )
+        result = result.to_markdown()
     return result
 
 
@@ -851,6 +854,8 @@ def gget_diamond(
 ):
     """Align multiple protein or translated DNA sequences using DIAMOND (DIAMOND is similar to BLAST, but this is a
     local computation)."""
+    if not query or not reference:
+        return "Required arguments not provided!"
     result = gget.diamond(
         query=query,
         reference=reference,
@@ -877,6 +882,8 @@ def gget_elm(
 ):
     """Locally predict Eukaryotic Linear Motifs from an amino acid sequence or UniProt Acc using data from the ELM
     database."""
+    if not sequence:
+        return "Required argument sequence not provided!"
     result = gget.elm(
         sequence=sequence,
         uniprot=uniprot,
