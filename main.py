@@ -59,6 +59,7 @@ tools_dict = {
     "gget_muscle": gget_muscle,
     "gget_mutate": gget_mutate,
     "gget_pdb": gget_pdb,
+    "gget_ref": gget_ref,
 }
 
 question = "Is the species with the gene ENSMUSG00000050530 same as species with the gene ENSMUSG00000017167?"  # question = input("Enter your question: ")

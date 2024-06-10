@@ -718,6 +718,60 @@ tools = [
             "required": ["pdb_id"],
         },
     },
+    {
+        "name": "gget_ref",
+        "description": "Fetch FTPs for reference genomes and annotations by species from Ensembl.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "species": {
+                    "type": "str",
+                    "description": "Defines the species for which the reference should be fetched in the format "
+                    "'<genus>_<species>', e.g. species = 'homo_sapiens'. Supported shortcuts: 'human', "
+                    "'mouse', 'human_grch37' (accesses the GRCh37 genome assembly)",
+                },
+                "which": {
+                    "type": "str",
+                    "description": "Defines which results to return."
+                    "Default: 'all' -> Returns all available results."
+                    "Possible entries are one or a combination (as a list of strings) of the following:"
+                    "'gtf' - Returns the annotation (GTF)."
+                    "'cdna' - Returns the trancriptome (cDNA)."
+                    "'dna' - Returns the genome (DNA)."
+                    "'cds - Returns the coding sequences corresponding to Ensembl genes. (Does not contain UTR or "
+                    "intronic sequence.)"
+                    "'cdrna' - Returns transcript sequences corresponding to non-coding RNA genes (ncRNA)."
+                    "'pep' - Returns the protein translations of Ensembl genes.",
+                },
+                "release": {
+                    "type": "int",
+                    "description": "Defines the Ensembl release number from which the files are fetched, e.g. release "
+                    "= 104. Default: None -> latest Ensembl release is used",
+                },
+                "ftp": {
+                    "type": "bool",
+                    "description": "Return only the requested FTP links in a list (default: False)",
+                },
+                "save": {
+                    "type": "bool",
+                    "description": "Save the results in the local directory",
+                },
+                "list_species": {
+                    "type": "bool",
+                    "description": "If True and `species=None`, returns a list of all available VERTEBRATE species "
+                    "from the Ensembl database (default: False). (Can be combined with the `release` "
+                    "argument to get the available species from a specific Ensembl release.)",
+                },
+                "list_iv_species": {
+                    "type": "bool",
+                    "description": "If True and `species=None`, returns a list of all available INVERTEBRATE species "
+                    "from the Ensembl database (default: False). (Can be combined with the `release` "
+                    "argument to get the available species from a specific Ensembl release.)",
+                },
+            },
+            "required": ["species"],
+        },
+    },
     DEFAULT_RESPONSE_FUNCTION,
 ]
 
@@ -1113,5 +1167,30 @@ def gget_pdb(pdb_id, resource="pdb", identifier=None, save=False):
         return "Required argument pdb_id not provided!"
     result = gget.pdb(
         pdb_id=pdb_id, resource=resource, identifier=identifier, save=save
+    )
+    return result
+
+
+def gget_ref(
+    species,
+    which="all",
+    release=None,
+    ftp=False,
+    save=False,
+    list_species=False,
+    list_iv_species=False,
+):
+    """Fetch FTPs for reference genomes and annotations by species from Ensembl."""
+    if not species:
+        return "Required argument species not provided!"
+    result = gget.ref(
+        species=species,
+        which=which,
+        release=release,
+        ftp=ftp,
+        save=save,
+        list_species=list_species,
+        list_iv_species=list_iv_species,
+        verbose=True,
     )
     return result
