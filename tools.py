@@ -609,6 +609,115 @@ tools = [
             "required": ["fasta"],
         },
     },
+    {
+        "name": "gget_mutate",
+        "description": "Takes in nucleotide sequences and mutations (in standard mutation annotation - see below) and "
+        "returns mutated versions of the input sequences according to the provided mutations.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "sequences": {
+                    "type": "str|list",
+                    "description": "(str) Path to the fasta file containing the sequences to be mutated, e.g., "
+                    "'seqs.fa'. Sequence identifiers following the '>' character must correspond to "
+                    "the identifiers in the seq_ID column of 'mutations'. NOTE: Only string until "
+                    "first space or dot will be used as sequence identifier - Version numbers of "
+                    "Ensembl IDs will be ignored. Example: >seq1 (or ENSG00000106443) ACTGCGATAGACT "
+                    ">seq2 AGATCGCTAG Alternatively: Input sequence(s) as a string or list, "
+                    "e.g. 'AGCTAGCT' or ['ACTGCTAGCT', 'AGCTAGCT'].",
+                },
+                "mutations": {
+                    "type": "str|list",
+                    "description": "Path to csv or tsv file (str) (e.g., 'mutations.csv') or data frame (DataFrame "
+                    "object)"
+                    "containing information about the mutations in the following format:"
+                    "| mutation         | mut_ID | seq_ID |"
+                    "| c.2C>T           | mut1   | seq1   | -> Apply mutation 1 to sequence 1"
+                    "| c.9_13inv        | mut2   | seq2   | -> Apply mutation 2 to sequence 2"
+                    "| c.9_13inv        | mut2   | seq3   | -> Apply mutation 2 to sequence 3"
+                    "| c.9_13delinsAAT  | mut3   | seq3   | -> Apply mutation 3 to sequence 3"
+                    "| ...              | ...    | ...    |"
+                    "'mutation' = Column containing the mutations to be performed written in standard mutation "
+                    "annotation (see below)"
+                    "'mut_ID' = Column containing an identifier for each mutation"
+                    "'seq_ID' = Column containing the identifiers of the sequences to be mutated (must correspond to "
+                    "the string following"
+                    "the > character in the 'sequences' fasta file; do NOT include spaces or dots)"
+                    "Alternatively: Input mutation(s) as a string or list, e.g., 'c.2C>T' or ['c.2C>T', 'c.1A>C']."
+                    "If a list is provided, the number of mutations must equal the number of input sequences.",
+                },
+                "k": {
+                    "type": "int",
+                    "description": "(int) Length of sequences flanking the mutation. Default: 30. If k > total length "
+                    "of the sequence, the entire sequence will be kept.",
+                },
+                "mut_column": {
+                    "type": "str",
+                    "description": "Name of the column containing the mutations to be performed in mutations. "
+                    "Default: 'mutation'.",
+                },
+                "mut_id_column": {
+                    "type": "str",
+                    "description": "Name of the column containing the IDs of each mutation in mutations. Default: "
+                    "'mut_ID'.",
+                },
+                "seq_id_column": {
+                    "type": "str",
+                    "description": "(str) Name of the column containing the IDs of the sequences to be mutated in "
+                    "'mutations'. Default: 'seq_ID'.",
+                },
+                "out": {
+                    "type": "str",
+                    "description": "Path to output FASTA file containing the mutated sequences, e.g., "
+                    "'path/to/output_fasta.fa'. Default: None -> returns a list of the mutated "
+                    "sequences to standard out. The identifiers (following the '>') of the mutated "
+                    "sequences in the output FASTA will be '>[seq_ID]_[mut_ID]'.",
+                },
+            },
+            "required": ["sequences", "mutations"],
+        },
+    },
+    {
+        "name": "gget_pdb",
+        "description": "Query RCSB PDB for the protein structutre/metadata of a given PDB ID.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "pdb_id": {
+                    "type": "str",
+                    "description": "PDB ID to be queried (str), e.g. '7S7U'.",
+                },
+                "resource": {
+                    "type": "str",
+                    "description": "Defines type of information to be returned. 'pdb': Returns the protein structure "
+                    "in PDB format (default). 'entry': Information about PDB structures at the top "
+                    "level of PDB structure hierarchical data organization. 'pubmed': Get PubMed "
+                    "annotations (data integrated from PubMed) for a given entry's primary citation. "
+                    "'assembly': Information about PDB structures at the quaternary structure level. "
+                    "'branched_entity': Get branched entity description (define entity ID as "
+                    "'identifier'). 'nonpolymer_entity': Get non-polymer entity data (define entity ID "
+                    "as 'identifier'). 'polymer_entity': Get polymer entity data (define entity ID as "
+                    "'identifier'). 'uniprot': Get UniProt annotations for a given macromolecular "
+                    "entity (define entity ID as 'identifier'). 'branched_entity_instance': Get "
+                    "branched entity instance description (define chain ID as 'identifier'). "
+                    "'polymer_entity_instance': Get polymer entity instance (a.k.a chain) data (define "
+                    "chain ID as 'identifier'). 'nonpolymer_entity_instance': Get non-polymer entity "
+                    "instance description (define chain ID as 'identifier').",
+                },
+                "identifier": {
+                    "type": "str",
+                    "description": "Can be used to define assembly, entity or chain ID if applicable (default: None)."
+                    "Assembly/entity IDs are numbers (e.g. 1), and chain IDs are letters (e.g. 'A').",
+                },
+                "save": {
+                    "type": "bool",
+                    "description": "True/False wether to save JSON/PDB with query results in the current working "
+                    "directory (default: False).",
+                },
+            },
+            "required": ["pdb_id"],
+        },
+    },
     DEFAULT_RESPONSE_FUNCTION,
 ]
 
@@ -968,4 +1077,41 @@ def gget_muscle(fasta, super5=False, out=None):
     if not fasta:
         return "Required argument fasta not provided!"
     result = gget.muscle(fasta=fasta, super5=super5, out=out, verbose=True)
+    return result
+
+
+def gget_mutate(
+    sequences,
+    mutations,
+    k=30,
+    mut_column="mutation",
+    mut_id_column="mut_ID",
+    seq_id_column="seq_ID",
+    out=None,
+):
+    """Takes in nucleotide sequences and mutations (in standard mutation annotation - see below)
+    and returns mutated versions of the input sequences according to the provided mutations.
+    """
+    if not sequences or not mutations:
+        return "Required arguments not provided!"
+    result = gget.mutate(
+        seuqnces=sequences,
+        mutations=mutations,
+        k=k,
+        mut_column=mut_column,
+        mut_id_column=mut_id_column,
+        seq_id_column=seq_id_column,
+        out=out,
+        verbose=True,
+    )
+    return result
+
+
+def gget_pdb(pdb_id, resource="pdb", identifier=None, save=False):
+    """Query RCSB Protein Data Bank (PDB) for the protein structure/metadata of a given PDB ID."""
+    if not pdb_id:
+        return "Required argument pdb_id not provided!"
+    result = gget.pdb(
+        pdb_id=pdb_id, resource=resource, identifier=identifier, save=save
+    )
     return result
