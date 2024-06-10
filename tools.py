@@ -581,6 +581,34 @@ tools = [
             "required": ["genes", "database"],
         },
     },
+    {
+        "name": "gget_muscle",
+        "description": "Align multiple nucleotide or amino acid sequences against each other (using the Muscle v5 "
+        "algorithm). Returns alignment results in ClustalW formatted standard out or an 'aligned "
+        "FASTA' (.afa) file.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "fasta": {
+                    "type": "list",
+                    "description": "List of sequences or path to fasta file containing the sequences to be aligned.",
+                },
+                "super5": {
+                    "type": "bool",
+                    "description": "True/False (default: False). If True, align input using Super5 algorithm instead "
+                    "of PPP algorithm to decrease time and memory. Use for large inputs (a few hundred"
+                    " sequences).",
+                },
+                "out": {
+                    "type": "str",
+                    "description": "Path to save an 'aligned FASTA' (.afa) file with the results, "
+                    "e.g. 'path/to/directory/results.afa'. Default: 'None' -> Results will be printed "
+                    "in Clustal format.",
+                },
+            },
+            "required": ["fasta"],
+        },
+    },
     DEFAULT_RESPONSE_FUNCTION,
 ]
 
@@ -931,4 +959,13 @@ def gget_enrichr(
     )
     if result is not None:
         result = result.to_makrdown()
+    return result
+
+
+def gget_muscle(fasta, super5=False, out=None):
+    """Align multiple nucleotide ir amino acid sequences to each other using Muscle5. Return ClustalW formatted
+    stardard out or aligned FASTA (.afa)"""
+    if not fasta:
+        return "Required argument fasta not provided!"
+    result = gget.muscle(fasta=fasta, super5=super5, out=out, verbose=True)
     return result
