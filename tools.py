@@ -772,6 +772,37 @@ tools = [
             "required": ["species"],
         },
     },
+    {
+        "name": "gget_seq",
+        "description": "Fetch nucleotide or amino acid sequence (FASTA) of a gene (and all its isoforms) or "
+        "transcript by Ensembl, WormBase or FlyBase ID.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "ens_ids": {
+                    "type": "str|list",
+                    "description": "One or more Ensembl IDs (passed as string or list of strings). Also supports "
+                    "WormBase and FlyBase IDs.",
+                },
+                "translate": {
+                    "type": "bool",
+                    "description": "True/False (default: False -> returns nucleotide sequences)."
+                    "Defines whether nucleotide or amino acid sequences are returned."
+                    "Nucleotide sequences are fetched from the Ensembl REST API server."
+                    "Amino acid sequences are fetched from the UniProt REST API server.",
+                },
+                "isoforms": {
+                    "type": "bool",
+                    "description": "If True, returns the sequences of all known transcripts (default: False).",
+                },
+                "save": {
+                    "type": "bool",
+                    "description": "If True, saves output FASTA to current directory (default: False).",
+                },
+            },
+            "required": ["ens_ids"],
+        },
+    },
     DEFAULT_RESPONSE_FUNCTION,
 ]
 
@@ -1191,6 +1222,21 @@ def gget_ref(
         save=save,
         list_species=list_species,
         list_iv_species=list_iv_species,
+        verbose=True,
+    )
+    return result
+
+
+def gget_seq(ens_ids, translate=False, isoforms=False, save=False):
+    """Fetch nucleotide or amino acid sequence (FASTA) of a gene
+    (and all its isoforms) or transcript by Ensembl, WormBase or FlyBase ID."""
+    if not ens_ids:
+        return "Required argument ens_ids not provided!"
+    result = gget.seq(
+        ens_ids=ens_ids,
+        translate=translate,
+        isoforms=isoforms,
+        save=save,
         verbose=True,
     )
     return result
