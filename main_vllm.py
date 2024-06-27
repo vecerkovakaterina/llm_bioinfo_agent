@@ -2,12 +2,6 @@ from openai import OpenAI
 from langchain.globals import set_debug, set_verbose
 import requests
 from tools_vllm import *
-import os
-from dotenv import load_dotenv
-
-dotenv_path = "openai_api_key.env"
-load_dotenv(dotenv_path)
-openai_api_key = os.getenv("OPENAI_API_KEY")
 
 
 set_debug(True)
@@ -72,71 +66,29 @@ tools_dict = {
 
 
 # question = "What can you tell me about this gene: ENSMUSG00000050530"
-question = "Is the species with the gene ENSMUSG00000050530 same as species with the gene ENSG00000139618?"
+# question = "Is the species with the gene ENSMUSG00000050530 same as species with the gene ENSG00000139618?"
 # question = "Can you please find the top 5 correlated genes to ACE2 in human?"
 # question = "Please predict structure of protein with this sequence MAAHKGAEHHHKAAEHHEQAAKHHHAAAEHHEKGEHEQAAHHADTAYAHHKHAEEHAAQAAKHDAEHHAPKPH"
 # question = input("Enter your question: ")
+question = "Describe the format of Ensembl ID"
 
 response = None
 
-# params_dict = {
-#     "model": "TechxGenus/Meta-Llama-3-70B-Instruct-GPTQ",  # locally running TechxGenus/Meta-Llama-3-70B-Instruct-GPTQ with vLLM
-#     "messages": [
-#         {
-#             "role": "user",
-#             "content": question,
-#         },
-#     ],
-#     "tools": tools,
-#     "tool_choice": "required",
-#     "response_format": {"type": "json_object"},
-#     "stream": False,
-#     "temperature": 0,
-# }
+params_dict = {
+    "model": "TechxGenus/Meta-Llama-3-70B-Instruct-GPTQ",  # locally running TechxGenus/Meta-Llama-3-70B-Instruct-GPTQ with vLLM
+    "messages": [
+        {"role": "system", "content": DEFAULT_SYSTEM_TEMPLATE},
+        {
+            "role": "user",
+            "content": question,
+        },
+    ],
+}
 
-client = OpenAI(api_key=openai_api_key, base_url="http://localhost:8000/v1")
+llm_call = get_response_answer(call_vllm_api(params_dict))
+print(llm_call)
 
-messages = [{"role": "user", "content": question}]
-completion = client.chat.completions.create(
-    model="TechxGenus/Meta-Llama-3-70B-Instruct-GPTQ",
-    messages=messages,
-    tools=tools,
-    tool_choice="required",
-)
-
-print(completion)
-
-# while response is None:
-#
-#     print(f"Chatting with the model")
-#     llm_call = get_response_answer(call_vllm_api(params_dict))
-#     print(llm_call)
-#
-#     response = parse_response(llm_call)
-#     if not response:
-#         content = parse_content(llm_call)
-#         function_call, function_call_args = parse_function_call(llm_call)
-#         print(f"Calling function {function_call} with arguments {function_call_args}")
-#         params_dict["messages"].append({"role": "assistant", "content": content})
-#         if function_call in tools_dict:
-#             function_call_result = tools_dict[function_call](**function_call_args)
-#             print(f"Function call result {function_call_result}")
-#             params_dict["messages"].append(
-#                 {
-#                     "role": "user",
-#                     "content": f"Function call {function_call} with query {function_call_args} is {function_call_result}",
-#                 }
-#             )
-#         else:
-#             print(f"Tool {function_call} does not exist.")
-#             params_dict["messages"].append(
-#                 {"role": "user", "content": f"Tool {function_call} does not exist."}
-#             )
-#
-#
-# print(response)
 
 # TODO rename functions to be more descriptive
-# TODO change order of tools
 # TODO logging
 # TODO after response wait for another human message
