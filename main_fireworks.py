@@ -4,6 +4,8 @@ import os
 from dotenv import load_dotenv
 from fireworks.client import Fireworks
 
+from tools_vllm import __conversational_response
+
 load_dotenv("api_keys.env")
 
 fireworks_api_key = os.getenv("FIREWORKS_API_KEY")
@@ -37,17 +39,15 @@ def parse_content(fireworks_api_completion):
     return fireworks_api_completion.message.content
 
 
-def parse_response(json_llm_call):
-    if "response" not in json_llm_call:
+def parse_response(message_content):
+    try:
+        json.loads(message_content)
         return None
-    message_content = parse_content(json_llm_call)
-    nested_content = json.loads(message_content)
-    response = nested_content["tool_input"]["response"]
-    return response
+    except ValueError:
+        return message_content
 
 
-def parse_function_call(json_llm_call):
-    message_content = parse_content(json_llm_call)
+def parse_function_call(message_content):
     nested_content = json.loads(message_content)
     tool = nested_content["tool"]
     tool_input = nested_content["tool_input"]
@@ -72,6 +72,7 @@ tools_dict = {
     "query_pdb": query_pdb,
     "get_fpt_link_to_reference_genome_by_species": get_fpt_link_to_reference_genome_by_species,
     "get_sequences_for_ensembl_ids": get_sequences_for_ensembl_ids,
+    "__conversational_response": __conversational_response,
 }
 
 
@@ -100,10 +101,10 @@ while response is None:
     llm_call = get_response_answer(call_fireworks_api(messages))
     print(llm_call)
 
-    response = parse_response(llm_call)
+    content = parse_content(llm_call)
+    response = parse_response(content)
     if not response:
-        content = parse_content(llm_call)
-        function_call, function_call_args = parse_function_call(llm_call)
+        function_call, function_call_args = parse_function_call(content)
         print(f"Calling function {function_call} with arguments {function_call_args}")
         messages.append({"role": "assistant", "content": content})
         if function_call in tools_dict:
@@ -120,9 +121,7 @@ while response is None:
             messages.append(
                 {"role": "user", "content": f"Tool {function_call} does not exist."}
             )
-
-
-print(response)
+    print(response)
 
 # TODO rename functions to be more descriptive
 # TODO logging
