@@ -1,5 +1,4 @@
 from langchain.globals import set_debug, set_verbose
-import requests
 from tools_vllm import *
 import os
 from dotenv import load_dotenv
@@ -31,13 +30,11 @@ def call_fireworks_api(messages):
 
 
 def get_response_answer(fireworks_api_completion):
-    return fireworks_api_completion.text
+    return fireworks_api_completion.choices[0]
 
 
-def parse_content(json_llm_call):
-    json_llm_call = json.loads(json_llm_call)
-    message_content = json_llm_call["message"]["content"]
-    return message_content
+def parse_content(fireworks_api_completion):
+    return fireworks_api_completion.message.content
 
 
 def parse_response(json_llm_call):
@@ -112,7 +109,7 @@ while response is None:
         if function_call in tools_dict:
             function_call_result = tools_dict[function_call](**function_call_args)
             print(f"Function call result {function_call_result}")
-            messages["messages"].append(
+            messages.append(
                 {
                     "role": "user",
                     "content": f"Function call {function_call} with query {function_call_args} is {function_call_result}",
@@ -120,7 +117,7 @@ while response is None:
             )
         else:
             print(f"Tool {function_call} does not exist.")
-            messages["messages"].append(
+            messages.append(
                 {"role": "user", "content": f"Tool {function_call} does not exist."}
             )
 
