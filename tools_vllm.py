@@ -4,95 +4,7 @@ import gget
 import pandas as pd
 from langchain_experimental.llms.ollama_functions import DEFAULT_RESPONSE_FUNCTION
 
-
-tools = [
-    {
-        "type": "function",
-        "function": {
-            "name": "get_further_clarification",
-            "description": "Ask user for missing information, further clarification, instructions or more details",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "message": {
-                        "type": "str",
-                        "description": "Question to the user",
-                    },
-                },
-                "required": ["message"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "get_info_for_ensembl_ids",
-            "description": "Fetch extensive gene and metadata from Ensembl, UniProt and NCBI using Ensembl IDs.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "ensembl_ids": {
-                        "type": "list",
-                        "description": "Ensembl IDs of genes to search. Examples of Ensembl IDs are ENSMUSG00000017167.",
-                    },
-                    "ncbi": {
-                        "type": "bool",
-                        "description": "Whether to include data from NCBI (default: True)",
-                    },
-                    "uniprot": {
-                        "type": "bool",
-                        "description": "Whether to include data from UniProt (default: True)",
-                    },
-                    "pdb": {
-                        "type": "bool",
-                        "description": "Whether to include data from PDB (default: False)",
-                    },
-                },
-                "required": ["ensembl_ids"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "search_ensembl",
-            "description": "Fetch genes and transcripts from Ensembl using free-form search terms"
-            "Results are matched"
-            "based on the 'gene name', 'description' and 'synonym' sections in the Ensembl database.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "search_words": {
-                        "type": "list",
-                        "description": "Free form search words (not case-sensitive) as a string or list of strings ("
-                        "e.g.searchwords = ['GABA', 'gamma-aminobutyric']).",
-                    },
-                    "species": {
-                        "type": "str",
-                        "description": "Species or database to be searched. A species can be passed in the format "
-                        "'genus_species', e.g. 'homo_sapiens'.",
-                    },
-                    "release": {
-                        "type": "int",
-                        "description": "Defines the Ensembl release number from which the files are fetched, e.g. 104."
-                        "release is used",
-                    },
-                    "id_type": {
-                        "type": "str",
-                        "description": "'gene' (default) or 'transcript' Defines whether genes or transcripts matching "
-                        "the searchwords are returned.",
-                    },
-                    "andor": {
-                        "type": "str",
-                        "description": "'or' (default) or 'and'. 'or': Returns all genes that INCLUDE AT LEAST ONE of the "
-                        "searchwords in their name/description. 'and': Returns only genes that INCLUDE ALL "
-                        "of the searchwords in their name/description.",
-                    },
-                },
-                "required": ["search_words", "species"],
-            },
-        },
-    },
+unused_tools = [
     {
         "type": "function",
         "function": {
@@ -173,49 +85,6 @@ tools = [
                     },
                 },
                 "required": ["gene"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "get_similar_sequences_with_blast",
-            "description": "BLAST a nucleotide or amino acid sequence against any BLAST DB.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "sequence": {
-                        "type": "str",
-                        "description": "Sequence (str) or path to FASTA file.",
-                    },
-                    "program": {
-                        "type": "str",
-                        "description": "'blastn', 'blastp', 'blastx', 'tblastn', or 'tblastx'. Default: 'blastn' for "
-                        "nucleotide sequences; 'blastp' for amino acid sequences.",
-                    },
-                    "database": {
-                        "type": "str",
-                        "description": "'nt', 'nr', 'refseq_rna', 'refseq_protein', 'swissprot', 'pdbaa', or 'pdbnt'. "
-                        "Default: 'nt' for nucleotide sequences; 'nr' for amino acid sequences.",
-                    },
-                    "limit": {
-                        "type": "int",
-                        "description": "Limits number of hits to return. Default 50.",
-                    },
-                    "expect": {
-                        "type": "float",
-                        "description": "float or None. An expect value cutoff. Default 10.0.",
-                    },
-                    "low_comp_filt": {
-                        "type": "bool",
-                        "description": "True/False whether to apply low complexity filter. Default False.",
-                    },
-                    "megablast": {
-                        "type": "bool",
-                        "description": "True/False whether to use the MegaBLAST algorithm (blastn only). Default True.",
-                    },
-                },
-                "required": ["sequence"],
             },
         },
     },
@@ -391,43 +260,6 @@ tools = [
     {
         "type": "function",
         "function": {
-            "name": "search_cosmic_for_mutations",
-            "description": "Search for genes, mutations, etc associated with cancers using the COSMIC (Catalogue Of "
-            "Somatic Mutations In Cancer) database",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "searchterm": {
-                        "type": "str",
-                        "description": "(str) Search term, which can be a mutation, gene name (or Ensembl ID), sample, etc."
-                        "Examples for the searchterm and entitity arguments:"
-                        "searchterm	entitity	Description"
-                        "EGFR	mutations	Find EGFR mutations linked to cancer"
-                        "v600e	mutations	Find genes with v600e mutation in cancer"
-                        "COSV57014428	mutations	Find mutations for this COSMIC ID",
-                    },
-                    "entity": {
-                        "type": "str",
-                        "description": "Defines the type of the results to return. One of the following: 'mutations' ("
-                        "default), 'genes', 'cancer', 'tumour_site', 'studies', 'pubmed', or 'samples'.",
-                    },
-                    "limit": {
-                        "type": "int",
-                        "description": "Number of hits to return. Default: 100",
-                    },
-                    "out": {
-                        "type": "str",
-                        "description": "Path to the file the results will be saved in, e.g. 'path/to/results.json'. "
-                        "Default: None",
-                    },
-                },
-                "required": ["searchterm"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
             "name": "align_sequences_with_diamond",
             "description": "Align multiple protein or translated DNA sequences using DIAMOND (local computation).",
             "parameters": {
@@ -518,6 +350,228 @@ tools = [
                     },
                 },
                 "required": ["sequence"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_fpt_link_to_reference_genome_by_species",
+            "description": "Fetch FTPs for reference genomes and annotations by species from Ensembl.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "species": {
+                        "type": "str",
+                        "description": "Defines the species for which the reference should be fetched in the format "
+                        "'<genus>_<species>', e.g. species = 'homo_sapiens'.",
+                    },
+                    "which": {
+                        "type": "str",
+                        "description": "Defines which results to return."
+                        "Default: 'all' -> Returns all available results."
+                        "Possible entries are one or a combination (as a list of strings) of the following:"
+                        "'gtf' Returns the annotation (GTF)."
+                        "'cdna' Returns the trancriptome (cDNA)."
+                        "'dna' Returns the genome (DNA)."
+                        "'cds' Returns the coding sequences corresponding to Ensembl genes."
+                        "'cdrna' Returns transcript sequences corresponding to non-coding RNA genes (ncRNA)."
+                        "'pep' Returns the protein translations of Ensembl genes.",
+                    },
+                    "release": {
+                        "type": "int",
+                        "description": "Defines the Ensembl release number. Default: None -> latest release",
+                    },
+                    "ftp": {
+                        "type": "bool",
+                        "description": "Return only the requested FTP links in a list (default: False)",
+                    },
+                    "save": {
+                        "type": "bool",
+                        "description": "Save the results in the local directory",
+                    },
+                    "list_species": {
+                        "type": "bool",
+                        "description": "If True and `species=None`, returns a list of all available VERTEBRATE species "
+                        "from the Ensembl database (default: False).",
+                    },
+                    "list_iv_species": {
+                        "type": "bool",
+                        "description": "If True and `species=None`, returns a list of all available INVERTEBRATE species "
+                        "from the Ensembl database (default: False).",
+                    },
+                },
+                "required": ["species"],
+            },
+        },
+    },
+]
+
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_further_clarification",
+            "description": "Ask user for missing information, further clarification, instructions or more details",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "str",
+                        "description": "Question to the user",
+                    },
+                },
+                "required": ["message"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_info_for_ensembl_ids",
+            "description": "Fetch extensive gene and metadata from Ensembl, UniProt and NCBI using Ensembl IDs.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "ensembl_ids": {
+                        "type": "list",
+                        "description": "Ensembl IDs of genes to search. Examples of Ensembl IDs are ENSMUSG00000017167.",
+                    },
+                    "ncbi": {
+                        "type": "bool",
+                        "description": "Whether to include data from NCBI (default: False)",
+                    },
+                    "uniprot": {
+                        "type": "bool",
+                        "description": "Whether to include data from UniProt (default: False)",
+                    },
+                    "pdb": {
+                        "type": "bool",
+                        "description": "Whether to include data from PDB (default: False)",
+                    },
+                },
+                "required": ["ensembl_ids"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "search_ensembl",
+            "description": "Fetch genes and transcripts from Ensembl using free-form search terms"
+            "Results are matched"
+            "based on the 'gene name', 'description' and 'synonym' sections in the Ensembl database.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "search_words": {
+                        "type": "list",
+                        "description": "Free form search words (not case-sensitive) as a string or list of strings ("
+                        "e.g.searchwords = ['GABA', 'gamma-aminobutyric']).",
+                    },
+                    "species": {
+                        "type": "str",
+                        "description": "Species or database to be searched. A species can be passed in the format "
+                        "'genus_species', e.g. 'homo_sapiens'.",
+                    },
+                    "release": {
+                        "type": "int",
+                        "description": "Defines the Ensembl release number from which the files are fetched, e.g. 104."
+                        "release is used",
+                    },
+                    "id_type": {
+                        "type": "str",
+                        "description": "'gene' (default) or 'transcript' Defines whether genes or transcripts matching "
+                        "the searchwords are returned.",
+                    },
+                    "andor": {
+                        "type": "str",
+                        "description": "'or' (default) or 'and'. 'or': Returns all genes that INCLUDE AT LEAST ONE of the "
+                        "searchwords in their name/description. 'and': Returns only genes that INCLUDE ALL "
+                        "of the searchwords in their name/description.",
+                    },
+                },
+                "required": ["search_words", "species"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_similar_sequences_with_blast",
+            "description": "BLAST a nucleotide or amino acid sequence against any BLAST DB.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "sequence": {
+                        "type": "str",
+                        "description": "Sequence (str) or path to FASTA file.",
+                    },
+                    "program": {
+                        "type": "str",
+                        "description": "'blastn', 'blastp', 'blastx', 'tblastn', or 'tblastx'. Default: 'blastn' for "
+                        "nucleotide sequences; 'blastp' for amino acid sequences.",
+                    },
+                    "database": {
+                        "type": "str",
+                        "description": "'nt', 'nr', 'refseq_rna', 'refseq_protein', 'swissprot', 'pdbaa', or 'pdbnt'. "
+                        "Default: 'nt' for nucleotide sequences; 'nr' for amino acid sequences.",
+                    },
+                    "limit": {
+                        "type": "int",
+                        "description": "Limits number of hits to return. Default 50.",
+                    },
+                    "expect": {
+                        "type": "float",
+                        "description": "float or None. An expect value cutoff. Default 10.0.",
+                    },
+                    "low_comp_filt": {
+                        "type": "bool",
+                        "description": "True/False whether to apply low complexity filter. Default False.",
+                    },
+                    "megablast": {
+                        "type": "bool",
+                        "description": "True/False whether to use the MegaBLAST algorithm (blastn only). Default True.",
+                    },
+                },
+                "required": ["sequence"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "search_cosmic_for_mutations",
+            "description": "Search for genes, mutations, etc associated with cancers using the COSMIC (Catalogue Of "
+            "Somatic Mutations In Cancer) database",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "searchterm": {
+                        "type": "str",
+                        "description": "(str) Search term, which can be a mutation, gene name (or Ensembl ID), sample, etc."
+                        "Examples for the searchterm and entitity arguments:"
+                        "searchterm	entitity	Description"
+                        "EGFR	mutations	Find EGFR mutations linked to cancer"
+                        "v600e	mutations	Find genes with v600e mutation in cancer"
+                        "COSV57014428	mutations	Find mutations for this COSMIC ID",
+                    },
+                    "entity": {
+                        "type": "str",
+                        "description": "Defines the type of the results to return. One of the following: 'mutations' ("
+                        "default), 'genes', 'cancer', 'tumour_site', 'studies', 'pubmed', or 'samples'.",
+                    },
+                    "limit": {
+                        "type": "int",
+                        "description": "Number of hits to return. Default: 100",
+                    },
+                    "out": {
+                        "type": "str",
+                        "description": "Path to the file the results will be saved in, e.g. 'path/to/results.json'. "
+                        "Default: None",
+                    },
+                },
+                "required": ["searchterm"],
             },
         },
     },
@@ -724,58 +778,6 @@ tools = [
     {
         "type": "function",
         "function": {
-            "name": "get_fpt_link_to_reference_genome_by_species",
-            "description": "Fetch FTPs for reference genomes and annotations by species from Ensembl.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "species": {
-                        "type": "str",
-                        "description": "Defines the species for which the reference should be fetched in the format "
-                        "'<genus>_<species>', e.g. species = 'homo_sapiens'.",
-                    },
-                    "which": {
-                        "type": "str",
-                        "description": "Defines which results to return."
-                        "Default: 'all' -> Returns all available results."
-                        "Possible entries are one or a combination (as a list of strings) of the following:"
-                        "'gtf' Returns the annotation (GTF)."
-                        "'cdna' Returns the trancriptome (cDNA)."
-                        "'dna' Returns the genome (DNA)."
-                        "'cds' Returns the coding sequences corresponding to Ensembl genes."
-                        "'cdrna' Returns transcript sequences corresponding to non-coding RNA genes (ncRNA)."
-                        "'pep' Returns the protein translations of Ensembl genes.",
-                    },
-                    "release": {
-                        "type": "int",
-                        "description": "Defines the Ensembl release number. Default: None -> latest release",
-                    },
-                    "ftp": {
-                        "type": "bool",
-                        "description": "Return only the requested FTP links in a list (default: False)",
-                    },
-                    "save": {
-                        "type": "bool",
-                        "description": "Save the results in the local directory",
-                    },
-                    "list_species": {
-                        "type": "bool",
-                        "description": "If True and `species=None`, returns a list of all available VERTEBRATE species "
-                        "from the Ensembl database (default: False).",
-                    },
-                    "list_iv_species": {
-                        "type": "bool",
-                        "description": "If True and `species=None`, returns a list of all available INVERTEBRATE species "
-                        "from the Ensembl database (default: False).",
-                    },
-                },
-                "required": ["species"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
             "name": "get_sequences_for_ensembl_ids",
             "description": "Fetch nucleotide or amino acid sequence (FASTA) of a gene (and all its isoforms) or "
             "transcript by Ensembl, WormBase or FlyBase ID.",
@@ -832,7 +834,7 @@ def get_further_clarification(message):
     return answer
 
 
-def get_info_for_ensembl_ids(ensembl_ids, ncbi=True, uniprot=True, pdb=False):
+def get_info_for_ensembl_ids(ensembl_ids, ncbi=False, uniprot=False, pdb=False):
     """Fetch extensive gene and metadata from Ensembl, UniProt and NCBI using Ensembl IDs. Examples of Ensembl IDs
     are ENSMUSG00000017167, ENSG00000139618 or ENSDARG00000024771. An Ensembl stable ID consists of five parts: ENS(
     species)(object type)(identifier). (version). The second part is a three-letter species code. For human,
@@ -1241,3 +1243,7 @@ def get_sequences_for_ensembl_ids(ens_ids, translate=False, isoforms=False, save
         verbose=True,
     )
     return result
+
+
+def __conversational_response(response):
+    return response
