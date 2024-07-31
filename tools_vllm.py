@@ -542,7 +542,7 @@ tools = [
         "function": {
             "name": "search_cosmic_for_mutations",
             "description": "Search for genes, mutations, etc associated with cancers using the COSMIC (Catalogue Of "
-            "Somatic Mutations In Cancer) database",
+            "Somatic Mutations In Cancer) database. Return the first <limit> results",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -562,7 +562,7 @@ tools = [
                     },
                     "limit": {
                         "type": "int",
-                        "description": "Number of hits to return. Default: 100",
+                        "description": "Number of hits to return. Default: 50",
                     },
                     "out": {
                         "type": "str",
@@ -779,7 +779,7 @@ tools = [
         "function": {
             "name": "get_sequences_for_ensembl_ids",
             "description": "Fetch nucleotide or amino acid sequence (FASTA) of a gene (and all its isoforms) or "
-            "transcript by Ensembl, WormBase or FlyBase ID.",
+            "transcript by Ensembl, WormBase or FlyBase ID and save them to file.",
             "parameters": {
                 "type": "object",
                 "properties": {
