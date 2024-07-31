@@ -84,12 +84,17 @@ tools_dict = {
     "__conversational_response": __conversational_response,
 }
 
-
-# question = "What can you tell me about this gene: ENSMUSG00000050530"
-question = "Is the species with the gene ENSMUSG00000050530 same as species with the gene ENSG00000139618?"
-# question = "Can you please find the top 5 correlated genes to ACE2 in human?"
-# question = "Please predict structure of protein with this sequence MAAHKGAEHHHKAAEHHEQAAKHHHAAAEHHEKGEHEQAAHHADTAYAHHKHAEEHAAQAAKHDAEHHAPKPH"
-# question = input("Enter your question: ")
+# testing and debugging questions
+# question = "Predict the structure of this sequence: GFKQDIATIRGDLRTYAQDIFLAFLNKYPDERRYFKNYVGKSDQELKSMAKFGDHTEKVFNLMMEVADRATDCVPLASDANTLVQMKQHSSLTTGNFEKLFVALVEYMRASGQSFDSQSWDRFGKNLVSALSSAGMK"
+# question = "What can you tell me about this gene ENSG00000139618"
+# question = "Find genes related to diabetes"
+# question = "Find sequences with BLAST similar to this one: GFKQDIATIRGDLRTYAQDIFLAFLNKYPDERRYFKNYVGKSDQELKSMAKFGDHTEKVFNLMMEVADRATDCVPLASDANTLVQMKQHSSLTTGNFEKLFVALVEYMRASGQSFDSQSWDRFGKNLVSALSSAGMK"
+question = "Get number of tested samples, genes, mutations, fusions, etc. with 'ovary' as primary tissue site"
+# question = "Perform enrichment analysis on these genes: PHF14 RBM3 MSL1 PHF21A"
+# question = "Align these two sequences GTGAACGTGACACGTGCTCGAG and GGACAGTACTACGTGCAGTCAGTA"
+# question = "Apply mutations from file test_mutations.csv to this sequence: GTGAACGTGACACGTGCTCGAG"
+# question = "Find record 7S7U in PDB"
+# question = "Get me the sequence of this gene ENSG00000139618"
 
 response = None
 
@@ -101,8 +106,6 @@ messages = [
     },
 ]
 
-
-# json.loads(chat_completion.choices[0].message.content)["tool"]
 
 while response is None:
 
