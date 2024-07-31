@@ -130,7 +130,16 @@ while response is None:
             messages.append(
                 {"role": "user", "content": f"Tool {function_call} does not exist."}
             )
-    print(response)
+    elif response:
+        print(response)
+        response = None
+        question = input()
+        messages.append(
+            {
+                "role": "user",
+                "content": question,
+            }
+        )
 
 # TODO rename functions to be more descriptive
 # TODO logging
