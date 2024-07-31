@@ -29,6 +29,7 @@ def call_fireworks_api(messages):
     chat_completion = client.chat.completions.create(
         model="accounts/fireworks/models/llama-v3p1-405b-instruct",
         messages=messages,
+        tools=tools,
         temperature=0.0,
     )
     return chat_completion

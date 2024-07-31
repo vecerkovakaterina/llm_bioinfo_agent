@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 import gget
 import pandas as pd
@@ -798,10 +799,6 @@ tools = [
                         "type": "bool",
                         "description": "If True, returns the sequences of all known transcripts (default: False).",
                     },
-                    "save": {
-                        "type": "bool",
-                        "description": "If True, saves output FASTA to current directory (default: False).",
-                    },
                 },
                 "required": ["ens_ids"],
             },
@@ -810,11 +807,9 @@ tools = [
     {"type": "function", "function": DEFAULT_RESPONSE_FUNCTION},
 ]
 
-DEFAULT_SYSTEM_TEMPLATE = f"""You have access to the following tools:
+DEFAULT_SYSTEM_TEMPLATE = f"""You have access to tools.
 
-{json.dumps(tools, indent=2)}
-
-You must always select one of the above tools and respond with only a JSON object matching the following schema:
+You must always select one of the above tools and respond with ONLY a JSON object matching the following schema:
 
 {{
   "tool": <name of the selected tool>,
