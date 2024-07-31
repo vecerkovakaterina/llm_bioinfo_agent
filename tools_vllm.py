@@ -9,51 +9,6 @@ unused_tools = [
     {
         "type": "function",
         "function": {
-            "name": "get_protein_structure_prediction",
-            "description": "Predicts the structure of a protein using a slightly simplified version of AlphaFold v2.3.0 "
-            "published in the AlphaFold Colab notebook",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "sequence": {
-                        "type": "str",
-                        "description": "Amino acid sequence (str), a list of sequences",
-                    },
-                    "out": {
-                        "type": "str",
-                        "description": "Path to folder to save prediction results in (str)."
-                        "Default: './[date_time]_get_protein_structure_prediction_prediction'",
-                    },
-                    "multimer_for_monomer": {
-                        "type": "bool",
-                        "description": "Use multimer model for a monomer (default: False).",
-                    },
-                    "multimer_recycles": {
-                        "type": "int",
-                        "description": "The multimer model will continue recycling until the predictions stop changing, "
-                        "up to the limit set here (default: 3).",
-                    },
-                    "relax": {
-                        "type": "bool",
-                        "description": "True/False whether to AMBER relax the best model (default: False).",
-                    },
-                    "plot": {
-                        "type": "bool",
-                        "description": "True/False whether to provide a graphical overview of the prediction (default: "
-                        "True).",
-                    },
-                    "show_sidechains": {
-                        "type": "bool",
-                        "description": "True/False whether to show side chains in the plot (default: True).",
-                    },
-                },
-                "required": ["sequence"],
-            },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
             "name": "get_correlated_genes",
             "description": "Find the most correlated genes or the tissue expression atlas of a gene of interest using "
             "data from the human and mouse RNA-seq database ARCHS4",
@@ -409,6 +364,49 @@ unused_tools = [
 ]
 
 tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_protein_structure_prediction",
+            "description": "Predicts the structure of a protein using a slightly simplified version of AlphaFold v2.3.0",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "sequence": {
+                        "type": "str",
+                        "description": "Amino acid sequence (str), a list of sequences",
+                    },
+                    "out": {
+                        "type": "str",
+                        "description": "Output directory (default: 'alphaofld_prediction')",
+                    },
+                    "multimer_for_monomer": {
+                        "type": "bool",
+                        "description": "Use multimer model for a monomer (default: False).",
+                    },
+                    "multimer_recycles": {
+                        "type": "int",
+                        "description": "The multimer model will continue recycling until the predictions stop changing, "
+                        "up to the limit set here (default: 3).",
+                    },
+                    "relax": {
+                        "type": "bool",
+                        "description": "True/False whether to AMBER relax the best model (default: False).",
+                    },
+                    "plot": {
+                        "type": "bool",
+                        "description": "True/False whether to provide a graphical overview of the prediction (default: "
+                        "True).",
+                    },
+                    "show_sidechains": {
+                        "type": "bool",
+                        "description": "True/False whether to show side chains in the plot (default: True).",
+                    },
+                },
+                "required": ["sequence"],
+            },
+        },
+    },
     {
         "type": "function",
         "function": {
