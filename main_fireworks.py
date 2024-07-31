@@ -3,6 +3,8 @@ from tools_vllm import *
 import os
 from dotenv import load_dotenv
 from fireworks.client import Fireworks
+from tokenizers import Tokenizer
+from transformers import AutoTokenizer
 
 from tools_vllm import __conversational_response
 
@@ -10,6 +12,7 @@ load_dotenv("api_keys.env")
 
 fireworks_api_key = os.getenv("FIREWORKS_API_KEY")
 
+tokenizer = AutoTokenizer.from_pretrained("TechxGenus/Meta-Llama-3-70B-Instruct-GPTQ")
 
 set_debug(True)
 set_verbose(True)
@@ -52,6 +55,12 @@ def parse_function_call(message_content):
     tool = nested_content["tool"]
     tool_input = nested_content["tool_input"]
     return tool, tool_input
+
+
+def get_tokens(text):
+    chat_template_text = tokenizer.apply_chat_template(text, tokenize=False)
+    return tokenizer.encode(chat_template_text)
+
 
 
 tools_dict = {
