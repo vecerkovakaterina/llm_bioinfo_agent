@@ -16,7 +16,7 @@ tokenizer = AutoTokenizer.from_pretrained("TechxGenus/Meta-Llama-3-70B-Instruct-
 
 set_debug(True)
 set_verbose(True)
-# gget.setup("alphafold") keeps failing
+# gget.setup("alphafold")
 # gget.setup("cellxgene")
 # gget.setup("elm")
 
