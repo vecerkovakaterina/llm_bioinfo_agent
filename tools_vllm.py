@@ -873,12 +873,12 @@ def search_ensembl(search_words, species, release=111, id_type="gene", andor="or
 
 def get_protein_structure_prediction(
     sequence=None,
+    out="alphafold_prediction",
     multimer_for_monomer=False,
     relax=False,
     multimer_recycles=3,
     plot=True,
     show_sidechains=True,
-    out=None,
 ):
     """Predicts the structure of a protein using a slightly simplified version of AlphaFold v2.3.0 (
     https://doi.org/10.1038/s41586-021-03819-2) published in the AlphaFold Colab notebook (
@@ -890,17 +890,15 @@ def get_protein_structure_prediction(
     Path(out).mkdir(exist_ok=True)
     result = gget.alphafold(
         sequence=sequence,
+        out=out,
         multimer_for_monomer=multimer_for_monomer,
         relax=relax,
         multimer_recycles=multimer_recycles,
         plot=plot,
         show_sidechains=show_sidechains,
-        out=out,
         verbose=True,
     )
-    if result is not None:
-        result = result.to_markdown()
-    return result
+    return f"Prediction saved to {out}"
 
 
 def get_correlated_genes(
