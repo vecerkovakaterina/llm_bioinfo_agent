@@ -415,12 +415,12 @@ tools = [
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "message": {
+                    "question": {
                         "type": "str",
                         "description": "Question to the user",
                     },
                 },
-                "required": ["message"],
+                "required": ["question"],
             },
         },
     },
@@ -821,9 +821,9 @@ information from the user."""
 # tools implementations
 
 
-def get_further_clarification(message):
+def get_further_clarification(question):
     """Ask user for missing information further clarification, instructions or more details."""
-    answer = input(message)
+    answer = input(question)
     return answer
 
 
