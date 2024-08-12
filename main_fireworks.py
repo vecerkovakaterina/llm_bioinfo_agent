@@ -39,19 +39,19 @@ def parse_content(fireworks_api_completion):
     return fireworks_api_completion.message.content
 
 
-def parse_response(message_content):
-    try:
-        json.loads(message_content)
-        return None
-    except ValueError:
-        return message_content
-
-
 def parse_function_call(message_content):
+    message_content = message_content.replace("<|python_tag|>", '')
     nested_content = json.loads(message_content)
     tool = nested_content["tool"]
     tool_input = nested_content["tool_input"]
     return tool, tool_input
+
+
+def parse_response(message_content):
+    if "<|python_tag|>" in message_content:
+        return None
+    else:
+        return message_content
 
 
 def get_tokens(text):
