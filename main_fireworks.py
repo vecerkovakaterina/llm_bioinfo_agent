@@ -1,3 +1,4 @@
+import requests
 from langchain.globals import set_debug, set_verbose
 from tools_vllm import *
 import os
@@ -59,7 +60,6 @@ def get_tokens(text):
     return tokenizer.encode(chat_template_text)
 
 
-
 tools_dict = {
     "get_further_clarification": get_further_clarification,
     "get_info_for_ensembl_ids": get_info_for_ensembl_ids,
@@ -102,7 +102,6 @@ messages = [
         "content": question,
     },
 ]
-
 
 while response is None:
 
