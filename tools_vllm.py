@@ -866,7 +866,7 @@ def search_ensembl(search_words, species, release=111, id_type="gene", andor="or
     result = gget.search(
         searchwords=search_words,
         species=species,
-        release=release,
+        release=int(release),
         id_type=id_type,
         andor=andor,
         verbose=True,
