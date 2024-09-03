@@ -1230,7 +1230,7 @@ def get_fpt_link_to_reference_genome_by_species(
     return result
 
 
-def get_sequences_for_ensembl_ids(ens_ids, translate=False, isoforms=False, save=False):
+def get_sequences_for_ensembl_ids(ens_ids, translate=False, isoforms=False):
     """Fetch nucleotide or amino acid sequence (FASTA) of a gene
     (and all its isoforms) or transcript by Ensembl, WormBase or FlyBase ID."""
     if not ens_ids:
@@ -1239,10 +1239,10 @@ def get_sequences_for_ensembl_ids(ens_ids, translate=False, isoforms=False, save
         ens_ids=ens_ids,
         translate=translate,
         isoforms=isoforms,
-        save=save,
+        save=True,
         verbose=True,
     )
-    return result
+    return f"Sequence saved to 'gget_seq_results.fa': {result}"
 
 
 def __conversational_response(response):
