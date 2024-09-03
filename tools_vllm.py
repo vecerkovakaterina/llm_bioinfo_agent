@@ -11,14 +11,14 @@ unused_tools = [
         "function": {
             "name": "get_correlated_genes",
             "description": "Find the most correlated genes or the tissue expression atlas of a gene of interest using "
-            "data from the human and mouse RNA-seq database ARCHS4",
+                           "data from the human and mouse RNA-seq database ARCHS4",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "gene": {
                         "type": "str",
                         "description": "Short name (Entrez gene symbol) of gene of interest (str), e.g. 'STAT4'. Set "
-                        "'ensembl=True' to input an Ensembl gene ID, e.g. ENSG00000138378.",
+                                       "'ensembl=True' to input an Ensembl gene ID, e.g. ENSG00000138378.",
                     },
                     "ensembl": {
                         "type": "bool",
@@ -27,9 +27,9 @@ unused_tools = [
                     "which": {
                         "type": "str",
                         "description": "'correlation' (default) or 'tissue'. - 'correlation' returns a gene correlation "
-                        "table that contains the 100 most correlated genes to the gene of interest."
-                        "'tissue' returns a tissue expression atlas calculated from human or mouse samples "
-                        "in ARCHS4.",
+                                       "table that contains the 100 most correlated genes to the gene of interest."
+                                       "'tissue' returns a tissue expression atlas calculated from human or mouse samples "
+                                       "in ARCHS4.",
                     },
                     "gene_count": {
                         "type": "int",
@@ -59,12 +59,12 @@ unused_tools = [
                     "seqtype": {
                         "type": "str",
                         "description": "'DNA', 'protein', 'translated%20RNA', or 'translated%20DNA'. Default: 'DNA' for "
-                        "nucleotide sequences; 'protein' for amino acid sequences.",
+                                       "nucleotide sequences; 'protein' for amino acid sequences.",
                     },
                     "assembly": {
                         "type": "str",
                         "description": "'human' (hg38) (default), 'mouse' (mm39), 'zebrafinch' (taeGut2), or any of the "
-                        "species assemblies available at UCSC.",
+                                       "species assemblies available at UCSC.",
                     },
                 },
                 "required": ["sequence"],
@@ -76,8 +76,8 @@ unused_tools = [
         "function": {
             "name": "query_cellxgene",
             "description": "Query data from CZ CELLxGENE Discover."
-            "Use the cell metadata attributes to define the (sub)dataset of interest."
-            "Returns AnnData object (when meta_only=False) or dataframe (when meta_only=True).",  # TODO
+                           "Use the cell metadata attributes to define the (sub)dataset of interest."
+                           "Returns AnnData object (when meta_only=False) or dataframe (when meta_only=True).",  # TODO
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -86,127 +86,127 @@ unused_tools = [
                         "description": "Choice of 'homo_sapiens' or 'mus_musculus'. Default: 'homo_sapiens'.",
                     },
                     "gene": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of gene name(s) or Ensembl ID(s), e.g. ['ACE2', 'SLC5A1'] or ["
-                        "'ENSG00000130234', 'ENSG00000100170']. Default: None.",
+                                       "'ENSG00000130234', 'ENSG00000100170']. Default: None.",
                     },
                     "ensembl": {
                         "type": "bool",
                         "description": "True/False (default: False). Set to True when genes are provided as Ensembl IDs.",
                     },
                     "column_names": {
-                        "type": "list",
+                        "type": "array",
                         "description": "List of metadata columns to return (stored in AnnData.obs when meta_only=False). "
-                        "Default: ['dataset_id', 'assay', 'suspension_type', 'sex', 'tissue_general', "
-                        "'tissue', 'cell_type']",
+                                       "Default: ['dataset_id', 'assay', 'suspension_type', 'sex', 'tissue_general', "
+                                       "'tissue', 'cell_type']",
                     },
                     "meta_only": {
                         "type": "bool",
                         "description": "True/False (default: False). If True, returns only metadata dataframe ("
-                        "corresponds to AnnData.obs).",
+                                       "corresponds to AnnData.obs).",
                     },
                     "census_version": {
                         "type": "str",
                         "description": "Str defining version of Census, e.g. '2023-05-15' or 'latest' or 'stable'. "
-                        "Default: 'stable'.",
+                                       "Default: 'stable'.",
                     },
                     "out": {
                         "type": "str",
                         "description": "If provided, saves the generated AnnData h5ad (or csv when meta_only=True) file "
-                        "with the specified path. Default: None.",
+                                       "with the specified path. Default: None.",
                     },
                     "tissue": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of tissue(s), e.g. ['lung', 'blood']. Default: None.",
                     },
                     "cell_type": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of celltype(s), e.g. ['mucus secreting cell', 'neuroendocrine cell']. "
-                        "Default: None.",
+                                       "Default: None.",
                     },
                     "development_stage": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of development stage(s). Default: None.",
                     },
                     "disease": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of disease(s). Default: None.",
                     },
                     "sex": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of sex(es), e.g. 'female'. Default: None.",
                     },
                     "is_primary_data": {
                         "type": "bool",
                         "description": "True/False (default: True). If True, returns only the canonical instance of the "
-                        "cellular observation. This is commonly set to False for meta-analyses reusing "
-                        "data or for secondary views of data.",
+                                       "cellular observation. This is commonly set to False for meta-analyses reusing "
+                                       "data or for secondary views of data.",
                     },
                     "dataset_id": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of CELLxGENE dataset ID(s). Default: None.",
                     },
                     "tissue_general_ontology_term_id": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of high-level tissue UBERON ID(s). Default: None.",
                     },
                     "tissue_general": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of high-level tissue label(s). Default: None.",
                     },
                     "tissue_ontology_term_id": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of tissue ontology term ID(s) as defined in the CELLxGENE dataset "
-                        "schema. Default: None.",
+                                       "schema. Default: None.",
                     },
                     "assay_ontology_term_id": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of assay ontology term ID(s) as defined in the CELLxGENE dataset "
-                        "schema. Default: None.",
+                                       "schema. Default: None.",
                     },
                     "assay": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of assay(s) as defined in the CELLxGENE dataset schema. Default: None.",
                     },
                     "cell_type_ontology_term_id": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of celltype ontology term ID(s) as defined in the CELLxGENE dataset "
-                        "schema. Default: None.",
+                                       "schema. Default: None.",
                     },
                     "development_stage_ontology_term_id": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of development stage ontology term ID(s) as defined in the CELLxGENE "
-                        "dataset schema. Default: None.",
+                                       "dataset schema. Default: None.",
                     },
                     "disease_ontology_term_id": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of disease ontology term ID(s) as defined in the CELLxGENE dataset "
-                        "schema. Default: None.",
+                                       "schema. Default: None.",
                     },
                     "donor_id": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of donor ID(s) as defined in the CELLxGENE dataset schema. Default: "
-                        "None.",
+                                       "None.",
                     },
                     "self_reported_ethnicity_ontology_term_id": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of self reported ethnicity ontology ID(s) as defined in the CELLxGENE "
-                        "dataset schema. Default: None.",
+                                       "dataset schema. Default: None.",
                     },
                     "self_reported_ethnicity": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of self reported ethnicity as defined in the CELLxGENE dataset "
-                        "schema. Default: None.",
+                                       "schema. Default: None.",
                     },
                     "sex_ontology_term_id": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of sex ontology ID(s) as defined in the CELLxGENE dataset schema. "
-                        "Default: None.",
+                                       "Default: None.",
                     },
                     "suspension_type": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Str or list of suspension type(s) as defined in the CELLxGENE dataset schema. "
-                        "Default: None.",
+                                       "Default: None.",
                     },
                 },
                 "required": [],
@@ -222,25 +222,25 @@ unused_tools = [
                 "type": "object",
                 "properties": {
                     "query": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Sequences (str or list) or path to FASTA file containing sequences to be aligned "
-                        "against the reference.",
+                                       "against the reference.",
                     },
                     "reference": {
-                        "type": "str|list",
+                        "type": "array",
                         "description": "Reference sequences (str or list) or path to FASTA file containing reference "
-                        "sequences.",
+                                       "sequences.",
                     },
                     "diamond_db": {
                         "type": "str",
                         "description": "Path to save DIAMOND database created from reference. Default: None -> Temporary "
-                        "db file will be deleted after alignment or saved in 'out' if 'out' is provided.",
+                                       "db file will be deleted after alignment or saved in 'out' if 'out' is provided.",
                     },
                     "sensitivity": {
                         "type": "str",
                         "description": "Sensitivity of DIAMOND alignment. One of the following: fast, mid-sensitive, "
-                        "sensitive, more-sensitive, very-sensitive or ultra-sensitive. Default: "
-                        "'very-sensitive'",
+                                       "sensitive, more-sensitive, very-sensitive or ultra-sensitive. Default: "
+                                       "'very-sensitive'",
                     },
                     "threads": {
                         "type": "int",
@@ -249,12 +249,12 @@ unused_tools = [
                     "diamond_binary": {
                         "type": "str",
                         "description": "Path to DIAMOND binary, e.g. path/bins/Linux/diamond. Default: None -> Uses "
-                        "DIAMOND binary installed with gget.",
+                                       "DIAMOND binary installed with gget.",
                     },
                     "out": {
                         "type": "str",
                         "description": "Path to folder to save DIAMOND results in. Default: Standard out, temporary files "
-                        "are deleted.",
+                                       "are deleted.",
                     },
                 },
                 "required": ["query", "reference"],
@@ -266,7 +266,7 @@ unused_tools = [
         "function": {
             "name": "predict_eukaryotic_motif",
             "description": "Locally predicts Eukaryotic Linear Motifs from an amino acid sequence or UniProt Acc using "
-            "data from the ELM database",
+                           "data from the ELM database",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -277,13 +277,13 @@ unused_tools = [
                     "uniprot": {
                         "type": "bool",
                         "description": "Set to True if the input is a Uniprot Acc instead of an amino acid sequence. "
-                        "Default: False.",
+                                       "Default: False.",
                     },
                     "sensitivity": {
                         "type": "str",
                         "description": "Sensitivity of DIAMOND alignment. One of the following: fast, mid-sensitive, "
-                        "sensitive, more-sensitive, very-sensitive, or ultra-sensitive. Default: "
-                        "'very-sensitive'",
+                                       "sensitive, more-sensitive, very-sensitive, or ultra-sensitive. Default: "
+                                       "'very-sensitive'",
                     },
                     "threads": {
                         "type": "int",
@@ -296,13 +296,13 @@ unused_tools = [
                     "expand": {
                         "type": "bool",
                         "description": "Expand the information returned in the regex data frame to include the protein "
-                        "names, organisms and references that the motif was orignally validated on. "
-                        "Default: False.",
+                                       "names, organisms and references that the motif was orignally validated on. "
+                                       "Default: False.",
                     },
                     "out": {
                         "type": "str",
                         "description": "Path to folder to save results in. Default: Standard out, temporary files are "
-                        "deleted.",
+                                       "deleted.",
                     },
                 },
                 "required": ["sequence"],
@@ -320,19 +320,19 @@ unused_tools = [
                     "species": {
                         "type": "str",
                         "description": "Defines the species for which the reference should be fetched in the format "
-                        "'<genus>_<species>', e.g. species = 'homo_sapiens'.",
+                                       "'<genus>_<species>', e.g. species = 'homo_sapiens'.",
                     },
                     "which": {
                         "type": "str",
                         "description": "Defines which results to return."
-                        "Default: 'all' -> Returns all available results."
-                        "Possible entries are one or a combination (as a list of strings) of the following:"
-                        "'gtf' Returns the annotation (GTF)."
-                        "'cdna' Returns the trancriptome (cDNA)."
-                        "'dna' Returns the genome (DNA)."
-                        "'cds' Returns the coding sequences corresponding to Ensembl genes."
-                        "'cdrna' Returns transcript sequences corresponding to non-coding RNA genes (ncRNA)."
-                        "'pep' Returns the protein translations of Ensembl genes.",
+                                       "Default: 'all' -> Returns all available results."
+                                       "Possible entries are one or a combination (as a list of strs) of the following:"
+                                       "'gtf' Returns the annotation (GTF)."
+                                       "'cdna' Returns the trancriptome (cDNA)."
+                                       "'dna' Returns the genome (DNA)."
+                                       "'cds' Returns the coding sequences corresponding to Ensembl genes."
+                                       "'cdrna' Returns transcript sequences corresponding to non-coding RNA genes (ncRNA)."
+                                       "'pep' Returns the protein translations of Ensembl genes.",
                     },
                     "release": {
                         "type": "int",
@@ -349,12 +349,12 @@ unused_tools = [
                     "list_species": {
                         "type": "bool",
                         "description": "If True and `species=None`, returns a list of all available VERTEBRATE species "
-                        "from the Ensembl database (default: False).",
+                                       "from the Ensembl database (default: False).",
                     },
                     "list_iv_species": {
                         "type": "bool",
                         "description": "If True and `species=None`, returns a list of all available INVERTEBRATE species "
-                        "from the Ensembl database (default: False).",
+                                       "from the Ensembl database (default: False).",
                     },
                 },
                 "required": ["species"],
@@ -387,7 +387,7 @@ tools = [
                     "multimer_recycles": {
                         "type": "int",
                         "description": "The multimer model will continue recycling until the predictions stop changing, "
-                        "up to the limit set here (default: 3).",
+                                       "up to the limit set here (default: 3).",
                     },
                     "relax": {
                         "type": "bool",
@@ -396,7 +396,7 @@ tools = [
                     "plot": {
                         "type": "bool",
                         "description": "True/False whether to provide a graphical overview of the prediction (default: "
-                        "True).",
+                                       "True).",
                     },
                     "show_sidechains": {
                         "type": "bool",
@@ -433,7 +433,7 @@ tools = [
                 "type": "object",
                 "properties": {
                     "ensembl_ids": {
-                        "type": "list",
+                        "type": "str|list",
                         "description": "Ensembl IDs of genes to search. Examples of Ensembl IDs are ENSMUSG00000017167.",
                     },
                     "ncbi": {
@@ -458,36 +458,36 @@ tools = [
         "function": {
             "name": "search_ensembl",
             "description": "Fetch genes and transcripts from Ensembl using free-form search terms"
-            "Results are matched"
-            "based on the 'gene name', 'description' and 'synonym' sections in the Ensembl database.",
+                           "Results are matched"
+                           "based on the 'gene name', 'description' and 'synonym' sections in the Ensembl database.",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "search_words": {
                         "type": "list",
-                        "description": "Free form search words (not case-sensitive) as a string or list of strings ("
-                        "e.g.searchwords = ['GABA', 'gamma-aminobutyric']).",
+                        "description": "Free form search words (not case-sensitive) as a str or list of strs ("
+                                       "e.g.searchwords = ['GABA', 'gamma-aminobutyric']).",
                     },
                     "species": {
                         "type": "str",
                         "description": "Species or database to be searched. A species can be passed in the format "
-                        "'genus_species', e.g. 'homo_sapiens'.",
+                                       "'genus_species', e.g. 'homo_sapiens'.",
                     },
                     "release": {
                         "type": "int",
                         "description": "Defines the Ensembl release number from which the files are fetched, e.g. 104."
-                        "release is used",
+                                       "release is used",
                     },
                     "id_type": {
                         "type": "str",
                         "description": "'gene' (default) or 'transcript' Defines whether genes or transcripts matching "
-                        "the searchwords are returned.",
+                                       "the searchwords are returned.",
                     },
                     "andor": {
                         "type": "str",
                         "description": "'or' (default) or 'and'. 'or': Returns all genes that INCLUDE AT LEAST ONE of the "
-                        "searchwords in their name/description. 'and': Returns only genes that INCLUDE ALL "
-                        "of the searchwords in their name/description.",
+                                       "searchwords in their name/description. 'and': Returns only genes that INCLUDE ALL "
+                                       "of the searchwords in their name/description.",
                     },
                 },
                 "required": ["search_words", "species"],
@@ -509,12 +509,12 @@ tools = [
                     "program": {
                         "type": "str",
                         "description": "'blastn', 'blastp', 'blastx', 'tblastn', or 'tblastx'. Default: 'blastn' for "
-                        "nucleotide sequences; 'blastp' for amino acid sequences.",
+                                       "nucleotide sequences; 'blastp' for amino acid sequences.",
                     },
                     "database": {
                         "type": "str",
                         "description": "'nt', 'nr', 'refseq_rna', 'refseq_protein', 'swissprot', 'pdbaa', or 'pdbnt'. "
-                        "Default: 'nt' for nucleotide sequences; 'nr' for amino acid sequences.",
+                                       "Default: 'nt' for nucleotide sequences; 'nr' for amino acid sequences.",
                     },
                     "limit": {
                         "type": "int",
@@ -542,23 +542,23 @@ tools = [
         "function": {
             "name": "search_cosmic_for_mutations",
             "description": "Search for genes, mutations, etc associated with cancers using the COSMIC (Catalogue Of "
-            "Somatic Mutations In Cancer) database. Return the first <limit> results",
+                           "Somatic Mutations In Cancer) database. Return the first <limit> results",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "searchterm": {
                         "type": "str",
                         "description": "(str) Search term, which can be a mutation, gene name (or Ensembl ID), sample, etc."
-                        "Examples for the searchterm and entitity arguments:"
-                        "searchterm	entitity	Description"
-                        "EGFR	mutations	Find EGFR mutations linked to cancer"
-                        "v600e	mutations	Find genes with v600e mutation in cancer"
-                        "COSV57014428	mutations	Find mutations for this COSMIC ID",
+                                       "Examples for the searchterm and entitity arguments:"
+                                       "searchterm	entitity	Description"
+                                       "EGFR	mutations	Find EGFR mutations linked to cancer"
+                                       "v600e	mutations	Find genes with v600e mutation in cancer"
+                                       "COSV57014428	mutations	Find mutations for this COSMIC ID",
                     },
                     "entity": {
                         "type": "str",
                         "description": "Defines the type of the results to return. One of the following: 'mutations' ("
-                        "default), 'genes', 'cancer', 'tumour_site', 'studies', 'pubmed', or 'samples'.",
+                                       "default), 'genes', 'cancer', 'tumour_site', 'studies', 'pubmed', or 'samples'.",
                     },
                     "limit": {
                         "type": "int",
@@ -567,7 +567,7 @@ tools = [
                     "out": {
                         "type": "str",
                         "description": "Path to the file the results will be saved in, e.g. 'path/to/results.json'. "
-                        "Default: None",
+                                       "Default: None",
                     },
                 },
                 "required": ["searchterm"],
@@ -585,20 +585,20 @@ tools = [
                     "genes": {
                         "type": "list",
                         "description": "List of Entrez gene symbols to perform enrichment analysis on, passed as a list "
-                        "of strings, e.g. ['PHF14', 'RBM3', 'MSL1', 'PHF21A']."
-                        "Set 'ensembl = True' to input a list of Ensembl gene IDs, e.g. ["
-                        "'ENSG00000106443', 'ENSG00000102317', 'ENSG00000188895'].",
+                                       "of strs, e.g. ['PHF14', 'RBM3', 'MSL1', 'PHF21A']."
+                                       "Set 'ensembl = True' to input a list of Ensembl gene IDs, e.g. ["
+                                       "'ENSG00000106443', 'ENSG00000102317', 'ENSG00000188895'].",
                     },
                     "database": {
                         "type": "str",
                         "description": "Database to use as reference for the enrichment analysis."
-                        "Supported shortcuts (and their default database):"
-                        "'pathway' (KEGG_2021_Human)"
-                        "'transcription' (ChEA_2016)"
-                        "'ontology' (GO_Biological_Process_2021)"
-                        "'diseases_drugs' (GWAS_Catalog_2019)"
-                        "'celltypes' (PanglaoDB_Augmented_2021)"
-                        "'kinase_interactions' (KEA_2015)",
+                                       "Supported shortcuts (and their default database):"
+                                       "'pathway' (KEGG_2021_Human)"
+                                       "'transcription' (ChEA_2016)"
+                                       "'ontology' (GO_Biological_Process_2021)"
+                                       "'diseases_drugs' (GWAS_Catalog_2019)"
+                                       "'celltypes' (PanglaoDB_Augmented_2021)"
+                                       "'kinase_interactions' (KEA_2015)",
                     },
                     "background_list": {
                         "type": "list",
@@ -611,12 +611,12 @@ tools = [
                     "ensembl_bkg": {
                         "type": "bool",
                         "description": "Define as 'True' if 'background_list' is a list of Ensembl gene IDs. (Default: "
-                        "False)",
+                                       "False)",
                     },
                     "plot": {
                         "type": "bool",
                         "description": "True/False whether to provide a graphical overview of the first 15 results. ("
-                        "Default: False)",
+                                       "Default: False)",
                     },
                     "figsize": {
                         "type": "tuple",
@@ -625,12 +625,12 @@ tools = [
                     "ax": {
                         "type": "object",
                         "description": "Pass a matplotlib axes object for further customization of the plot. (Default: "
-                        "None)",
+                                       "None)",
                     },
                     "kegg_out": {
                         "type": "str",
                         "description": "Path to file to save the highlighted KEGG pathway image, "
-                        "e.g. path/to/folder/kegg_pathway.png. (Default: None)",
+                                       "e.g. path/to/folder/kegg_pathway.png. (Default: None)",
                     },
                     "kegg_rank": {
                         "type": "int",
@@ -646,8 +646,8 @@ tools = [
         "function": {
             "name": "align_sequences_with_muscle",
             "description": "Align multiple nucleotide or amino acid sequences against each other (using the Muscle v5 "
-            "algorithm). Returns alignment results in ClustalW formatted standard out or an 'aligned "
-            "FASTA' (.afa) file.",
+                           "algorithm). Returns alignment results in ClustalW formatted standard out or an 'aligned "
+                           "FASTA' (.afa) file.",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -658,13 +658,13 @@ tools = [
                     "super5": {
                         "type": "bool",
                         "description": "True/False (default: False). If True, align input using Super5 algorithm instead "
-                        "of PPP algorithm to decrease time and memory.",
+                                       "of PPP algorithm to decrease time and memory.",
                     },
                     "out": {
                         "type": "str",
                         "description": "Path to save an 'aligned FASTA' (.afa) file with the results, "
-                        "e.g. 'path/to/directory/results.afa'. Default: 'None' -> Results will be printed "
-                        "in Clustal format.",
+                                       "e.g. 'path/to/directory/results.afa'. Default: 'None' -> Results will be printed "
+                                       "in Clustal format.",
                     },
                 },
                 "required": ["fasta"],
@@ -676,56 +676,56 @@ tools = [
         "function": {
             "name": "mutate_sequences",
             "description": "Takes in nucleotide sequences and mutations (in standard mutation annotation - see below) and "
-            "returns mutated versions of the input sequences according to the provided mutations.",
+                           "returns mutated versions of the input sequences according to the provided mutations.",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "sequences": {
                         "type": "str|list",
                         "description": "Path to the fasta file with sequences to be mutated, e.g., 'seqs.fa'. "
-                        "Sequence IDs after '>' must match those in the seq_ID column of 'mutations'. "
-                        "Only the part before the first space or dot is used as the ID, "
-                        "ignoring Ensembl ID versions. Example: >seq1 ACTGCGATAGACT >seq2 AGATCGCTAG. "
-                        "Alternatively, input sequences as a string or list, e.g., 'AGCTAGCT' or ["
-                        "'ACTGCTAGCT', 'AGCTAGCT'].",
+                                       "Sequence IDs after '>' must match those in the seq_ID column of 'mutations'. "
+                                       "Only the part before the first space or dot is used as the ID, "
+                                       "ignoring Ensembl ID versions. Example: >seq1 ACTGCGATAGACT >seq2 AGATCGCTAG. "
+                                       "Alternatively, input sequences as a str or list, e.g., 'AGCTAGCT' or ["
+                                       "'ACTGCTAGCT', 'AGCTAGCT'].",
                     },
                     "mutations": {
                         "type": "str|list",
                         "description": "Path to csv/tsv file (e.g., 'mutations.csv') or DataFrame containing mutation info:"
-                        "| mutation  | mut_ID | seq_ID |"
-                        "|-----------|--------|--------|"
-                        "| c.2C>T    | mut1   | seq1   | -> Apply mutation 1 to sequence 1"
-                        "| c.9_13inv | mut2   | seq2   | -> Apply mutation 2 to sequence 2"
-                        "'mutation': Column with mutations in standard annotation."
-                        "'mut_ID': Column with mutation IDs."
-                        "'seq_ID': Column with sequence IDs (must match IDs in the fasta file, excluding spaces/dots)."
-                        "Alternatively, input mutations as a string or list, e.g., 'c.2C>T' or ['c.2C>T', 'c.1A>C']. If a list, the number of mutations must match the number of sequences.",
+                                       "| mutation  | mut_ID | seq_ID |"
+                                       "|-----------|--------|--------|"
+                                       "| c.2C>T    | mut1   | seq1   | -> Apply mutation 1 to sequence 1"
+                                       "| c.9_13inv | mut2   | seq2   | -> Apply mutation 2 to sequence 2"
+                                       "'mutation': Column with mutations in standard annotation."
+                                       "'mut_ID': Column with mutation IDs."
+                                       "'seq_ID': Column with sequence IDs (must match IDs in the fasta file, excluding spaces/dots)."
+                                       "Alternatively, input mutations as a str or list, e.g., 'c.2C>T' or ['c.2C>T', 'c.1A>C']. If a list, the number of mutations must match the number of sequences.",
                     },
                     "k": {
                         "type": "int",
                         "description": "(int) Length of sequences flanking the mutation. Default: 30. If k > total length "
-                        "of the sequence, the entire sequence will be kept.",
+                                       "of the sequence, the entire sequence will be kept.",
                     },
                     "mut_column": {
                         "type": "str",
                         "description": "Name of the column containing the mutations to be performed in mutations. "
-                        "Default: 'mutation'.",
+                                       "Default: 'mutation'.",
                     },
                     "mut_id_column": {
                         "type": "str",
                         "description": "Name of the column containing the IDs of each mutation in mutations. Default: "
-                        "'mut_ID'.",
+                                       "'mut_ID'.",
                     },
                     "seq_id_column": {
                         "type": "str",
                         "description": "(str) Name of the column containing the IDs of the sequences to be mutated in "
-                        "'mutations'. Default: 'seq_ID'.",
+                                       "'mutations'. Default: 'seq_ID'.",
                     },
                     "out": {
                         "type": "str",
                         "description": "Path to output FASTA file containing the mutated sequences, e.g., "
-                        "'path/to/output_fasta.fa'. Default: None -> returns a list of the mutated "
-                        "sequences to standard out.",
+                                       "'path/to/output_fasta.fa'. Default: None -> returns a list of the mutated "
+                                       "sequences to standard out.",
                     },
                 },
                 "required": ["sequences", "mutations"],
@@ -747,27 +747,27 @@ tools = [
                     "resource": {
                         "type": "str",
                         "description": "Defines type of information to return:"
-                        "'pdb' Protein structure in PDB format (default)"
-                        "'entry' Top-level PDB structure info"
-                        "'pubmed' PubMed annotations for the primary citation"
-                        "'assembly' Quaternary structure info"
-                        "'branched_entity' Branched entity description (use entity ID)"
-                        "'nonpolymer_entity' Non-polymer entity data (use entity ID)"
-                        "'polymer_entity' Polymer entity data (use entity ID)"
-                        "'uniprot' UniProt annotations (use entity ID)"
-                        "'branched_entity_instance' Branched entity instance (use chain ID)"
-                        "'polymer_entity_instance' Polymer entity instance (use chain ID)"
-                        "'nonpolymer_entity_instance' Non-polymer entity instance (use chain ID)",
+                                       "'pdb' Protein structure in PDB format (default)"
+                                       "'entry' Top-level PDB structure info"
+                                       "'pubmed' PubMed annotations for the primary citation"
+                                       "'assembly' Quaternary structure info"
+                                       "'branched_entity' Branched entity description (use entity ID)"
+                                       "'nonpolymer_entity' Non-polymer entity data (use entity ID)"
+                                       "'polymer_entity' Polymer entity data (use entity ID)"
+                                       "'uniprot' UniProt annotations (use entity ID)"
+                                       "'branched_entity_instance' Branched entity instance (use chain ID)"
+                                       "'polymer_entity_instance' Polymer entity instance (use chain ID)"
+                                       "'nonpolymer_entity_instance' Non-polymer entity instance (use chain ID)",
                     },
                     "identifier": {
                         "type": "str",
                         "description": "Can be used to define assembly, entity or chain ID if applicable (default: None)."
-                        "Assembly/entity IDs are numbers (e.g. 1), and chain IDs are letters (e.g. 'A').",
+                                       "Assembly/entity IDs are numbers (e.g. 1), and chain IDs are letters (e.g. 'A').",
                     },
                     "save": {
                         "type": "bool",
                         "description": "True/False wether to save JSON/PDB with query results in the current working "
-                        "directory (default: False).",
+                                       "directory (default: False).",
                     },
                 },
                 "required": ["pdb_id"],
@@ -779,19 +779,19 @@ tools = [
         "function": {
             "name": "get_sequences_for_ensembl_ids",
             "description": "Fetch nucleotide or amino acid sequence (FASTA) of a gene (and all its isoforms) or "
-            "transcript by Ensembl, WormBase or FlyBase ID and save them to file.",
+                           "transcript by Ensembl, WormBase or FlyBase ID and save them to file.",
             "parameters": {
                 "type": "object",
                 "properties": {
                     "ens_ids": {
                         "type": "str|list",
-                        "description": "One or more Ensembl IDs (passed as string or list of strings). Also supports "
-                        "WormBase and FlyBase IDs.",
+                        "description": "One or more Ensembl IDs (passed as str or list of strs). Also supports "
+                                       "WormBase and FlyBase IDs.",
                     },
                     "translate": {
                         "type": "bool",
                         "description": "True/False (default: False -> returns nucleotide sequences)."
-                        "Defines whether nucleotide or amino acid sequences are returned.",
+                                       "Defines whether nucleotide or amino acid sequences are returned.",
                     },
                     "isoforms": {
                         "type": "bool",
@@ -805,17 +805,22 @@ tools = [
     {"type": "function", "function": DEFAULT_RESPONSE_FUNCTION},
 ]
 
-DEFAULT_SYSTEM_TEMPLATE = f"""You have access to tools.
+DEFAULT_SYSTEM_TEMPLATE = f"""You have access to the following tools:
 
-You must always select one of the above tools and respond with ONLY a JSON object matching the following schema:
+{json.dumps(tools, indent=2)}
+
+Your task is to assist with bioinformatics-related queries using these tools. Unrequired arguments for these tools are set to highly effective defaults, so you only need to modify them if absolutely necessary.
+
+Always prioritize proceeding with an answer using the tools available. If the input is vague or missing some information, use your best judgment to infer what the user might be asking and select the most appropriate tool. **Only** use the 'get_further_clarification' tool if you truly cannot proceed without additional critical information.
+
+Respond with ONLY a JSON object matching the following schema:
 
 {{
   "tool": <name of the selected tool>,
   "tool_input": <parameters for the selected tool, matching the tool's JSON schema>
 }}
 
-If you don't have all required arguments to use a tool, use the get_further_clarification tool to get missing 
-information from the user."""
+When in doubt, rely on the default settings for the tool's unrequired parameters, and proceed with the best guess rather than asking for clarification. Always aim to move forward and provide value with each response."""
 
 
 # tools implementations
@@ -872,13 +877,13 @@ def search_ensembl(search_words, species, release=111, id_type="gene", andor="or
 
 
 def get_protein_structure_prediction(
-    sequence=None,
-    out="alphafold_prediction",
-    multimer_for_monomer=False,
-    relax=False,
-    multimer_recycles=3,
-    plot=True,
-    show_sidechains=True,
+        sequence=None,
+        out="alphafold_prediction",
+        multimer_for_monomer=False,
+        relax=False,
+        multimer_recycles=3,
+        plot=True,
+        show_sidechains=True,
 ):
     """Predicts the structure of a protein using a slightly simplified version of AlphaFold v2.3.0 (
     https://doi.org/10.1038/s41586-021-03819-2) published in the AlphaFold Colab notebook (
@@ -902,7 +907,7 @@ def get_protein_structure_prediction(
 
 
 def get_correlated_genes(
-    gene, ensembl=False, which="correlation", gene_count=100, species="human"
+        gene, ensembl=False, which="correlation", gene_count=100, species="human"
 ):
     """Find the most correlated genes or the tissue expression atlas
     of a gene of interest using data from the human and mouse RNA-seq
@@ -923,13 +928,13 @@ def get_correlated_genes(
 
 
 def get_similar_sequences_with_blast(
-    sequence,
-    program="default",
-    database="default",
-    limit=50,
-    expect=10.0,
-    low_comp_filt=False,
-    megablast=True,
+        sequence,
+        program="default",
+        database="default",
+        limit=50,
+        expect=10.0,
+        low_comp_filt=False,
+        megablast=True,
 ):
     """BLAST a nucleotide or amino acid sequence against any BLAST DB."""
     if not sequence:
@@ -962,41 +967,41 @@ def get_similar_sequences_with_blat(sequence, seqtype="default", assembly="human
 
 
 def query_cellxgene(
-    species="homo_sapiens",
-    gene=None,
-    ensembl=False,
-    column_names=[
-        "dataset_id",
-        "assay",
-        "suspension_type",
-        "sex",
-        "tissue_general",
-        "tissue",
-        "cell_type",
-    ],
-    meta_only=False,
-    tissue=None,
-    cell_type=None,
-    development_stage=None,
-    disease=None,
-    sex=None,
-    is_primary_data=True,
-    dataset_id=None,
-    tissue_general_ontology_term_id=None,
-    tissue_general=None,
-    assay_ontology_term_id=None,
-    assay=None,
-    cell_type_ontology_term_id=None,
-    development_stage_ontology_term_id=None,
-    disease_ontology_term_id=None,
-    donor_id=None,
-    self_reported_ethnicity_ontology_term_id=None,
-    self_reported_ethnicity=None,
-    sex_ontology_term_id=None,
-    suspension_type=None,
-    tissue_ontology_term_id=None,
-    census_version="stable",
-    out=None,
+        species="homo_sapiens",
+        gene=None,
+        ensembl=False,
+        column_names=[
+            "dataset_id",
+            "assay",
+            "suspension_type",
+            "sex",
+            "tissue_general",
+            "tissue",
+            "cell_type",
+        ],
+        meta_only=False,
+        tissue=None,
+        cell_type=None,
+        development_stage=None,
+        disease=None,
+        sex=None,
+        is_primary_data=True,
+        dataset_id=None,
+        tissue_general_ontology_term_id=None,
+        tissue_general=None,
+        assay_ontology_term_id=None,
+        assay=None,
+        cell_type_ontology_term_id=None,
+        development_stage_ontology_term_id=None,
+        disease_ontology_term_id=None,
+        donor_id=None,
+        self_reported_ethnicity_ontology_term_id=None,
+        self_reported_ethnicity=None,
+        sex_ontology_term_id=None,
+        suspension_type=None,
+        tissue_ontology_term_id=None,
+        census_version="stable",
+        out=None,
 ):
     """Query data from CZ CELLxGENE Discover (https://cellxgene.cziscience.com/) using the
     CZ CELLxGENE Discover Census (https://github.com/chanzuckerberg/cellxgene-census).
@@ -1045,10 +1050,10 @@ def query_cellxgene(
 
 
 def search_cosmic_for_mutations(
-    searchterm,
-    entity="mutations",
-    limit=100,
-    out=None,
+        searchterm,
+        entity="mutations",
+        limit=100,
+        out=None,
 ):
     """Search for genes, mutations, and other factors associated with cancer using the COSMIC (Catalogue Of Somatic
     Mutations In Cancer) database."""
@@ -1063,13 +1068,13 @@ def search_cosmic_for_mutations(
 
 
 def align_sequences_with_diamond(
-    query,
-    reference,
-    diamond_db=None,
-    sensitivity="very-sensitive",
-    threads=1,
-    diamond_binary=None,
-    out=None,
+        query,
+        reference,
+        diamond_db=None,
+        sensitivity="very-sensitive",
+        threads=1,
+        diamond_binary=None,
+        out=None,
 ):
     """Align multiple protein or translated DNA sequences using DIAMOND (DIAMOND is similar to BLAST, but this is a
     local computation)."""
@@ -1091,13 +1096,13 @@ def align_sequences_with_diamond(
 
 
 def predict_eukaryotic_motif(
-    sequence,
-    uniprot=False,
-    sensitivity="very-sensitive",
-    threads=1,
-    diamond_binary=None,
-    expand=False,
-    out=None,
+        sequence,
+        uniprot=False,
+        sensitivity="very-sensitive",
+        threads=1,
+        diamond_binary=None,
+        expand=False,
+        out=None,
 ):
     """Locally predict Eukaryotic Linear Motifs from an amino acid sequence or UniProt Acc using data from the ELM
     database."""
@@ -1119,16 +1124,16 @@ def predict_eukaryotic_motif(
 
 
 def perform_enrichment_analysis(
-    genes,
-    database,
-    background_list=None,
-    ensembl=False,
-    ensembl_bkg=False,
-    plot=False,
-    figsize=(10, 10),
-    ax=None,
-    kegg_out=None,
-    kegg_rank=1,
+        genes,
+        database,
+        background_list=None,
+        ensembl=False,
+        ensembl_bkg=False,
+        plot=False,
+        figsize=(10, 10),
+        ax=None,
+        kegg_out=None,
+        kegg_rank=1,
 ):
     """Perform an enrichment analysis on a list of genes using Enrichr."""
     if not genes or not database:
@@ -1162,13 +1167,13 @@ def align_sequences_with_muscle(fasta, super5=False, out=None):
 
 
 def mutate_sequences(
-    sequences,
-    mutations,
-    k=30,
-    mut_column="mutation",
-    mut_id_column="mut_ID",
-    seq_id_column="seq_ID",
-    out=None,
+        sequences,
+        mutations,
+        k=30,
+        mut_column="mutation",
+        mut_id_column="mut_ID",
+        seq_id_column="seq_ID",
+        out=None,
 ):
     """Takes in nucleotide sequences and mutations (in standard mutation annotation - see below)
     and returns mutated versions of the input sequences according to the provided mutations.
@@ -1199,13 +1204,13 @@ def query_pdb(pdb_id, resource="pdb", identifier=None, save=False):
 
 
 def get_fpt_link_to_reference_genome_by_species(
-    species,
-    which="all",
-    release=None,
-    ftp=False,
-    save=False,
-    list_species=False,
-    list_iv_species=False,
+        species,
+        which="all",
+        release=None,
+        ftp=False,
+        save=False,
+        list_species=False,
+        list_iv_species=False,
 ):
     """Fetch FTPs for reference genomes and annotations by species from Ensembl."""
     if not species:
