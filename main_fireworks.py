@@ -140,6 +140,6 @@ while response is None:
             }
         )
 
-# TODO rename functions to be more descriptive
 # TODO logging
-# TODO after response wait for another human message
+# TODO finetune on function codebase
+# TODO finetune on test q&a
