@@ -1010,6 +1010,7 @@ def query_cellxgene(
     to define the (sub)dataset of interest.
     The CZ CELLxGENE Discover Census recommends >16 GB of memory and a >5 Mbps internet connection.
     """
+    gget.setup("cellxgene")
     result = gget.cellxgene(
         species=species,
         gene=gene,
@@ -1108,6 +1109,7 @@ def predict_eukaryotic_motif(
     database."""
     if not sequence:
         return "Required argument sequence not provided!"
+    gget.setup("elm")
     result = gget.elm(
         sequence=sequence,
         uniprot=uniprot,
