@@ -88,7 +88,7 @@ params_dict = {
 
 while response is None:
 
-    print(f"Chatting with the model")
+    print("Chatting with the model")
     llm_call = get_response_answer(call_ollama_api(params_dict))
     print(llm_call)
 
