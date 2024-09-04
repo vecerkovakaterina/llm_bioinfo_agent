@@ -1,10 +1,8 @@
-import requests
 from langchain.globals import set_debug, set_verbose
 from tools_vllm import *
 import os
 from dotenv import load_dotenv
 from fireworks.client import Fireworks
-from tokenizers import Tokenizer
 from transformers import AutoTokenizer
 
 from tools_vllm import __conversational_response
@@ -82,11 +80,12 @@ tools_dict = {
 }
 
 # testing and debugging questions
+# question = "Use your own words to explain what is bioinformatics?"
 # question = "Predict the structure of this sequence: GFKQDIATIRGDLRTYAQDIFLAFLNKYPDERRYFKNYVGKSDQELKSMAKFGDHTEKVFNLMMEVADRATDCVPLASDANTLVQMKQHSSLTTGNFEKLFVALVEYMRASGQSFDSQSWDRFGKNLVSALSSAGMK"
-# question = "What can you tell me about this gene ENSG00000139618"
-# question = "Find genes related to diabetes"
+# question = "What information can you tell me about this gene ENSG00000139618"
+question = "Find genes related to diabetes"
 # question = "Find sequences with BLAST similar to this one: GFKQDIATIRGDLRTYAQDIFLAFLNKYPDERRYFKNYVGKSDQELKSMAKFGDHTEKVFNLMMEVADRATDCVPLASDANTLVQMKQHSSLTTGNFEKLFVALVEYMRASGQSFDSQSWDRFGKNLVSALSSAGMK"
-question = "Get number of tested samples, genes, mutations, fusions, etc. with 'ovary' as primary tissue site"
+# question = "Get number of tested samples, genes, mutations, fusions, etc. with 'ovary' as primary tissue site"
 # question = "Perform enrichment analysis on these genes: PHF14 RBM3 MSL1 PHF21A"
 # question = "Align these two sequences GTGAACGTGACACGTGCTCGAG and GGACAGTACTACGTGCAGTCAGTA"
 # question = "Apply mutations from file test_mutations.csv to this sequence: GTGAACGTGACACGTGCTCGAG"
