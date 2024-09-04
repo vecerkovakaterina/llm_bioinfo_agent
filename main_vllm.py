@@ -65,11 +65,11 @@ tools_dict = {
 
 
 # question = "What can you tell me about this gene: ENSMUSG00000050530"
-# question = "Is the species with the gene ENSMUSG00000050530 same as species with the gene ENSG00000139618?"
+question = "Is the species with the gene ENSMUSG00000050530 same as species with the gene ENSG00000139618?"
 # question = "Can you please find the top 5 correlated genes to ACE2 in human?"
 # question = "Please predict structure of protein with this sequence MAAHKGAEHHHKAAEHHEQAAKHHHAAAEHHEKGEHEQAAHHADTAYAHHKHAEEHAAQAAKHDAEHHAPKPH"
 # question = input("Enter your question: ")
-question = "Describe the format of Ensembl ID"
+# question = "Describe the format of Ensembl ID"
 
 response = None
 
@@ -88,6 +88,5 @@ llm_call = get_response_answer(call_vllm_api(params_dict))
 print(llm_call)
 
 
-# TODO rename functions to be more descriptive
 # TODO logging
 # TODO after response wait for another human message
