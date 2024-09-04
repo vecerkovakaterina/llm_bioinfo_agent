@@ -1,11 +1,11 @@
 from langchain.globals import set_debug, set_verbose
-from tools_vllm import *
+from tools_fireworks import *
 import os
 from dotenv import load_dotenv
 from fireworks.client import Fireworks
 from transformers import AutoTokenizer
 
-from tools_vllm import __conversational_response
+from tools_fireworks import __conversational_response
 
 load_dotenv("api_keys.env")
 
