@@ -1,4 +1,3 @@
-from openai import OpenAI
 from langchain.globals import set_debug, set_verbose
 import requests
 from tools_vllm import *
