@@ -104,7 +104,7 @@ messages = [
 
 while response is None:
 
-    print(f"Chatting with the model")
+    print("Chatting with the model")
     llm_call = get_response_answer(call_fireworks_api(messages))
     print(llm_call)
 
