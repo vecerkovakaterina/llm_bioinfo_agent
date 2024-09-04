@@ -893,7 +893,7 @@ def get_protein_structure_prediction(
         return "Aminoacid sequence not provided!"
     gget.setup("alphafold")
     Path(out).mkdir(exist_ok=True)
-    result = gget.alphafold(
+    gget.alphafold(
         sequence=sequence,
         out=out,
         multimer_for_monomer=multimer_for_monomer,
