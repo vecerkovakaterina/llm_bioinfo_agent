@@ -1,11 +1,8 @@
-import json
 
 from langchain.globals import set_debug, set_verbose
 from langchain_core.messages import HumanMessage, AIMessage
-from langchain_core.utils.function_calling import format_tool_to_openai_function
 from langchain_experimental.llms.ollama_functions import (
     OllamaFunctions,
-    convert_to_ollama_tool,
     DEFAULT_RESPONSE_FUNCTION,
 )
 import requests
